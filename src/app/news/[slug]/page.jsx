@@ -1,14 +1,38 @@
 import React from "react";
 import { NewsData } from "@/constDatas/NewsData";
+import { NewsCategory } from "@/constDatas/NewsCategory";
 import Image from "next/image";
+
+const monthArray = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const page = ({ params }) => {
   const { slug } = params;
 
-  const pageData = NewsData?.find((item) => item.slug === slug);
+  const item = NewsData?.find((item) => item.slug === slug);
 
-  const wordCount = pageData?.description.length;
+  const wordCount = item?.description.length;
   const readTime = Math.round(wordCount / 300);
+
+  const newDate = new Date(item.date);
+
+  const day = newDate.getDate();
+
+  const formattedDate = `${day}${
+    day === 1 ? "st" : day === 2 ? "nd" : day === 3 ? "rd" : "th"
+  } ${monthArray[newDate.getMonth()]} ${newDate.getFullYear()}`;
 
   return (
     <div className="container px-5 mx-auto mt-[32px]">
@@ -21,24 +45,24 @@ const page = ({ params }) => {
           News
         </a>
         <span className="px-2">/</span>
-        <a className="font-semibold capitalize" href={`/news/${pageData.slug}`}>
-          {pageData.slug.replaceAll("-", " ")}
+        <a className="font-semibold capitalize" href={`/news/${item.slug}`}>
+          {item.slug.replaceAll("-", " ")}
         </a>
       </nav>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 mt-[32px] relative">
-        <article className="lg:col-span-4">
-          <h2 className="text-4xl lg:text-5xl font-bold">{pageData.title}</h2>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-7 mt-[32px] relative">
+        <article className="lg:col-span-5">
+          <h2 className="text-4xl lg:text-5xl font-bold">{item.title}</h2>
 
           <div className="mt-6">
             <span>
-              {pageData.date} <span className="pr-2">|</span>
+              {formattedDate} <span className="pr-2">|</span>
             </span>
             <span className="capitalize">
-              {pageData.newsType} <span className="pr-2">|</span>
+              {item.newsCategory} <span className="pr-2">|</span>
             </span>
             <span className="capitalize">
-              {pageData.location} <span className="pr-2">|</span>
-            </span>{" "}
+              {item.location} <span className="pr-2">|</span>
+            </span>
             <span className="capitalize">
               Read Time: {readTime} mins (~{wordCount} words)
             </span>
@@ -47,12 +71,13 @@ const page = ({ params }) => {
 
           <div
             className="rich-text-container"
-            dangerouslySetInnerHTML={{ __html: pageData.description }}
+            dangerouslySetInnerHTML={{ __html: item.description }}
           ></div>
         </article>
-        <aside>
-          <div className="w-full h-fit sticky top-28 left-0">
-            <h4 className="text-xl font-bold">Other News</h4>
+
+        <aside className="lg:col-span-2 w-full h-fit sticky top-28 left-0 flex flex-col gap-10">
+          <div className="flex flex-col gap-5 bg-neutral-50 p-4 shadow rounded-md">
+            <h4 className="text-xl font-bold highlight">Other News</h4>
             <div className="flex flex-col gap-4 mt-4">
               {NewsData?.slice(0, 3)?.map((item, index) => {
                 if (item.slug != slug)
@@ -62,29 +87,44 @@ const page = ({ params }) => {
                       href={`/news/${item.slug}`}
                       className="w-full"
                     >
-                      <div className="bg-neutral-50 flex flex-col gap-4 rounded-md overflow-hidden hover:bg-slate-100 hover:shadow transition-all">
+                      <div className=" flex items-start gap-[2px] rounded-md overflow-hidden hover:bg-slate-100 hover:shadow transition-all">
                         <Image
                           src={item?.image}
                           width={300}
                           height={300}
                           title={item?.title}
-                          className="w-full h-[8rem] object-cover"
+                          className="w-[6rem] aspect-square object-cover"
                         />
-
                         <div className="px-4 py-2 flex flex-col ">
                           <p className="text-sm">
                             <span>
                               {item?.date} <span className="pr-2">|</span>
                             </span>
-                            <span className="capitalize">{item?.newsType}</span>
+                            <span className="capitalize">
+                              {item?.newsCategory}
+                            </span>
                           </p>
-
-                          <h3 className="font-bold text-xl">{item?.title}</h3>
+                          <h3 className="font-bold text-xl line-clamp-3">
+                            {item?.title}
+                          </h3>
                         </div>
                       </div>
                     </a>
                   );
               })}
+            </div>
+          </div>
+          <div className="flex flex-col gap-5 bg-neutral-50 p-4 shadow rounded-md">
+            <h4 className="text-xl font-bold highlight">Browse Categories</h4>
+            <div className="flex gap-3 flex-wrap">
+              {NewsCategory.map((item, index) => (
+                <div
+                  className="bg-primary-orange/20 px-7 py-3 rounded-full font-semibold"
+                  key={index}
+                >
+                  {item.title}
+                </div>
+              ))}
             </div>
           </div>
         </aside>

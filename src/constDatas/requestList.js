@@ -1,5 +1,3 @@
-import { RiExchangeDollarFill } from "react-icons/ri";
-
 export const requestList = [
   {
     icon: "",

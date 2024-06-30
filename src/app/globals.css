@@ -19,6 +19,17 @@ body {
   color: var(--matte-purple);
 }
 
+.highlight {
+  position: relative;
+  width: fit-content;
+  padding-bottom: 2px;
+}
+
+.highlight::before {
+  content: "";
+  @apply absolute w-[45%] bottom-0 left-0 h-1 bg-primary-orange;
+}
+
 .header-animated {
   /* fixed top-0 w-full bg-white flex transition-all */
   position: fixed;

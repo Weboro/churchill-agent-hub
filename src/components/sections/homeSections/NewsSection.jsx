@@ -14,7 +14,7 @@ const NewsSection = ({ showAll = true }) => {
               key={index}
               image={item?.image}
               title={item?.title}
-              newsType={item?.newsType}
+              newsCategory={item?.newsCategory}
               date={item?.date}
               description={item?.description}
               slug={item?.slug}

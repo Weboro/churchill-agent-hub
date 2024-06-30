@@ -22,6 +22,7 @@ import GuideDetails from "./sections/guideSections/GuideDetails";
 import WebinarSection from "./sections/homeSections/WebinarSection";
 import NewsSection from "./sections/homeSections/NewsSection";
 import NewsItemCard from "./cards/NewsItemCard";
+import NewsLetterSection from "./sections/homeSections/NewsLetterSection";
 
 export {
   Button,
@@ -48,4 +49,5 @@ export {
   WebinarSection,
   NewsSection,
   NewsItemCard,
+  NewsLetterSection,
 };
