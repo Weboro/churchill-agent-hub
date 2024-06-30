@@ -1,6 +1,5 @@
 import {
   HeroSection,
-  NewsSection,
   AgentDataSection,
   WebinarSection,
   NewsLetterSection,
@@ -16,8 +15,6 @@ const Home = () => {
         <AgentDataSection />
 
         <WebinarSection />
-
-        <NewsSection />
 
         <NewsLetterSection />
       </div>

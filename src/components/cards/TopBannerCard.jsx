@@ -1,4 +1,4 @@
-import React from "react";
+import Image from "next/image";
 
 const TopBannerCard = () => {
   return (
@@ -15,6 +15,13 @@ const TopBannerCard = () => {
     >
       <div className="container mx-auto px-5">
         <div className="flex flex-col gap-8 ">
+          <Image
+            src="/assets/agent-hub-logo.svg"
+            width={300}
+            height={200}
+            alt="logo"
+            className="mx-auto w-[80%] md:w-[18rem]"
+          />
           <h2 className="text-3xl md:text-5xl font-bold text-center text-[#eb9320]">
             How can we Help you?
           </h2>
