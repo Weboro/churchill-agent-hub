@@ -10,6 +10,8 @@ import AgentDetailCard from "./cards/AgentDetailCard";
 import RecordedWebinarSection from "./sections/homeSections/RecordedWebinarSection";
 import UpcomingWebinarSection from "./sections/homeSections/UpcomingWebinarSection";
 import AccordionComponent from "./accordion/AccordionComponent";
+import NewsSection from "./sections/homeSections/NewsSection";
+import NewsItemCard from "./cards/NewsItemCard";
 
 export {
   Button,
@@ -24,4 +26,6 @@ export {
   RecordedWebinarSection,
   UpcomingWebinarSection,
   AccordionComponent,
+  NewsSection,
+  NewsItemCard,
 };

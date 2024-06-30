@@ -17,8 +17,7 @@ const webinarData = [
 ];
 
 const WebinarSection = () => {
-  const [activeTitle, setActiveTitle] = useState("Recorded Webinar");
-  // Upcoming Webinar
+  const [activeTitle, setActiveTitle] = useState("Upcoming Webinar");
 
   return (
     <div className="mx-auto container px-5">
@@ -34,7 +33,7 @@ const WebinarSection = () => {
                   isCurrent
                     ? "before:absolute before:w-[90%] before:h-1 before:bottom-0 before:left-1/2 before:-translate-x-1/2 before:bg-primary-orange"
                     : ""
-                } relative cursor-pointer font-bold px-4 pt-3 pb-2`}
+                } relative cursor-pointer font-bold px-4 pt-3 pb-2 text-center`}
                 onClick={() => setActiveTitle(item.title)}
               >
                 {item.title}

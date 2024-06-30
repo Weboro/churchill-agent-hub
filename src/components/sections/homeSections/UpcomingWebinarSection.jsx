@@ -6,7 +6,7 @@ const UpcomingWebinarSection = () => {
     <div className="grid lg:grid-cols-3  gap-8">
       {UpcomingWebinarData.map((item, index) => (
         <div
-          className="bg-neutral-50 p-4 rounded-md flex flex-col gap-8"
+          className="bg-neutral-50 p-7 border border-primary-orange/50 rounded-md flex flex-col gap-8"
           key={index}
         >
           <div>

@@ -20,7 +20,6 @@ const AccordionComponent = ({ data }) => {
           const isActive = activeIndex == index ? true : false;
 
           const videoUrl = item.youtubeIframe.split("v=")[1];
-          console.log(videoUrl);
 
           return (
             <div key={index} className="border">
@@ -45,7 +44,7 @@ const AccordionComponent = ({ data }) => {
                     dangerouslySetInnerHTML={{ __html: item.description }}
                   />
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
                     <div className="flex items-center gap-2">
                       <Image
                         width={300}

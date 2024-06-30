@@ -168,3 +168,132 @@ body {
     background-position: 100% 0;
   }
 }
+
+/* rich text */
+.rich-text-container h2 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  margin-top: 1rem;
+  font-weight: 700;
+}
+.rich-text-container p {
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+}
+
+.rich-text-container {
+  margin-inline: auto;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 12px;
+  font-family: sans-serif;
+}
+
+.rich-text-container strong {
+  font-weight: 700;
+}
+
+.rich-text-container h1 {
+  line-height: 34px;
+}
+
+.rich-text-container h1,
+.rich-text-container h2,
+.rich-text-container h3,
+.rich-text-container h4,
+.rich-text-container h5,
+.rich-text-container h6 {
+  margin-top: 42px;
+  margin-bottom: 8px;
+  color: #2c2b4b;
+}
+
+.rich-text-container > table {
+  overflow-x: scroll;
+}
+@media screen and (max-width: 768px) {
+  .rich-text-container h1,
+  .rich-text-container h2,
+  .rich-text-container h3,
+  .rich-text-container h4,
+  .rich-text-container h5,
+  .rich-text-container h6 {
+    margin-top: 18px;
+  }
+}
+
+.rich-text-container img {
+  margin-inline: auto;
+  margin-block: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 12px 6px #00000010;
+}
+
+.rich-text-container h1 {
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center !important;
+}
+
+.rich-text-container h2 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.rich-text-container h3 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.rich-text-container h4 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.rich-text-container h5 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.rich-text-container p {
+  font-size: 18px;
+  margin-bottom: 16px;
+  margin-top: 8px;
+  line-height: 24px;
+}
+
+.rich-text-container ul,
+.rich-text-container li {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  line-height: 24px;
+}
+.rich-text-container ul {
+  list-style-type: disc;
+}
+.rich-text-container ul > li,
+.rich-text-container ol > li {
+  padding-left: 8px;
+  margin-left: 32px !important;
+}
+
+.rich-text-container table {
+  border-collapse: collapse;
+}
+
+.rich-text-container table td,
+.rich-text-container table th {
+  padding: 8px;
+}
+
+.rich-text-container table,
+.rich-text-container th,
+.rich-text-container td {
+  border: 1px solid #e59623;
+}
+.rich-text-container table tr:nth-child(1) th,
+.rich-text-container table tr:nth-child(1) td {
+  background: #e59623;
+  color: #eff3f5;
+  font-weight: 600;
+}
