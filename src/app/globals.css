@@ -270,47 +270,32 @@ tr:nth-child(even) {
 }
 
 /* rich text */
+.rich-text-container {
+  font-size: 18px;
+  line-height: 22px;
+  font-family: sans-serif;
+}
+
+.rich-text-container p {
+  font-size: 18px;
+  line-height: 22px;
+}
+
 .rich-text-container h2 {
   font-size: 1.25rem;
   line-height: 1.75rem;
   margin-top: 1rem;
   font-weight: 700;
 }
-.rich-text-container p {
-  font-size: 1.125rem;
-  line-height: 1.5rem;
-}
-
-.rich-text-container {
-  margin-inline: auto;
-  font-size: 16px;
-  line-height: 24px;
-  border-radius: 12px;
-  font-family: sans-serif;
-}
 
 .rich-text-container strong {
   font-weight: 700;
 }
 
-.rich-text-container h1 {
-  line-height: 34px;
-}
-
-.rich-text-container h1,
-.rich-text-container h2,
-.rich-text-container h3,
-.rich-text-container h4,
-.rich-text-container h5,
-.rich-text-container h6 {
-  margin-top: 42px;
-  margin-bottom: 8px;
-  color: #2c2b4b;
-}
-
 .rich-text-container > table {
   overflow-x: scroll;
 }
+
 @media screen and (max-width: 768px) {
   .rich-text-container h1,
   .rich-text-container h2,

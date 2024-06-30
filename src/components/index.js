@@ -20,8 +20,6 @@ import RequestFormSection from "./sections/commonSections/RequestFormSection";
 import PoliciesDetails from "./sections/policiesSections/PoliciesDetails";
 import GuideDetails from "./sections/guideSections/GuideDetails";
 import WebinarSection from "./sections/homeSections/WebinarSection";
-import RecrodedWebinarSection from "./sections/homeSections/RecrodedWebinarSection";
-import UpcomingWebinarSection from "./sections/homeSections/UpcomingWebinarSection";
 import NewsSection from "./sections/homeSections/NewsSection";
 import NewsItemCard from "./cards/NewsItemCard";
 
@@ -48,8 +46,6 @@ export {
   PoliciesDetails,
   GuideDetails,
   WebinarSection,
-  RecrodedWebinarSection,
-  UpcomingWebinarSection,
   NewsSection,
   NewsItemCard,
 };

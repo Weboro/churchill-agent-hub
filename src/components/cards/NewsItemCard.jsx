@@ -61,7 +61,7 @@ const NewsItemCard = ({
 
         <div
           dangerouslySetInnerHTML={{ __html: description }}
-          className="line-clamp-5 md:line-clamp-6"
+          className="line-clamp-4"
         />
 
         <Link href={`/news/${slug}`} className="w-fit">

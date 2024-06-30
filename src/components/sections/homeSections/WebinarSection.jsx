@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { RecrodedWebinarSection, UpcomingWebinarSection } from "@/components";
 
 const webinarData = [
   {

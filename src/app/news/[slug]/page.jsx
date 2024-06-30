@@ -40,12 +40,15 @@ const page = ({ params }) => {
               {pageData.location} <span className="pr-2">|</span>
             </span>{" "}
             <span className="capitalize">
-              Read Time: {readTime} mins ({wordCount}) words
+              Read Time: {readTime} mins (~{wordCount} words)
             </span>
           </div>
           <hr className="border border-black/10 mt-2 mb-4" />
 
-          <div dangerouslySetInnerHTML={{ __html: pageData.description }}></div>
+          <div
+            className="rich-text-container"
+            dangerouslySetInnerHTML={{ __html: pageData.description }}
+          ></div>
         </article>
         <aside>
           <div className="w-full h-fit sticky top-28 left-0">
