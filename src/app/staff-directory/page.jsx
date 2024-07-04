@@ -16,11 +16,11 @@ const page = () => {
           >
             <div className="w-[80px] h-[80px] grid place-items-center ">
               <Image
-                src={item.image}
+                src={`https://i.pravatar.cc/150?img=${index + 1}`}
                 alt={item.title}
                 width={80}
                 height={80}
-                className="w-[80px] h-[80px] object-cover rounded-full bg-red-900"
+                className="w-[80px] h-[80px] object-cover rounded-full bg-red-100"
               />
             </div>
 
