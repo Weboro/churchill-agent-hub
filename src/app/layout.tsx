@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   // default:'fsf',
   // template:'%s - sdfsd | sdfs'
   // },
-  title: "Churchil Student Hub",
+  title: "Churchil Agent Hub",
   // description: "sdfsd",
 };
 

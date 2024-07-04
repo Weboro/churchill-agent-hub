@@ -32,7 +32,7 @@ const TopBannerCard = () => {
               className="w-full h-full px-6 py-4 outline-none transparent-background "
             />
             <div className="h-12 w-12 absolute top-1/2 -translate-y-1/2 right-0 grid place-items-center rounded-full bg-primary-orange">
-              <i class="fi fi-br-search flex"></i>
+              <i className="fi fi-br-search flex"></i>
             </div>
           </div>
         </div>

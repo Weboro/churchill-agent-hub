@@ -12,6 +12,7 @@ import UpcomingWebinarSection from "./sections/homeSections/UpcomingWebinarSecti
 import AccordionComponent from "./accordion/AccordionComponent";
 import NewsSection from "./sections/homeSections/NewsSection";
 import NewsItemCard from "./cards/NewsItemCard";
+import PatternBannerCard from "./cards/PatternBannerCard";
 
 export {
   Button,
@@ -28,4 +29,5 @@ export {
   AccordionComponent,
   NewsSection,
   NewsItemCard,
+  PatternBannerCard,
 };

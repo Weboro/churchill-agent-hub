@@ -97,7 +97,7 @@ const AccordionComponent = ({ data }) => {
             }}
             className="absolute right-12 top-8 text-white text-xl"
           >
-            <i class="fi fi-br-cross flex"></i>
+            <i className="fi fi-br-cross flex"></i>
           </button>
         </div>
       )}
