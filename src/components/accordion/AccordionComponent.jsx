@@ -86,7 +86,7 @@ const AccordionComponent = ({ data }) => {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerpolicy="strict-origin-when-cross-origin"
               allowfullscreen
-              className="w-[80%] aspect-square md:aspect-[16/9]"
+              className="w-[80%] aspect-video"
             ></iframe>
           </div>
 

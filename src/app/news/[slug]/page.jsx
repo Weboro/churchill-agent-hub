@@ -102,7 +102,7 @@ const page = ({ params }) => {
                             src={item?.image}
                             width={300}
                             height={300}
-                            title={item?.title}
+                            alt={item?.title}
                             className="w-[6rem] aspect-square object-cover"
                           />
                           <div className="px-4 py-2 flex flex-col ">
