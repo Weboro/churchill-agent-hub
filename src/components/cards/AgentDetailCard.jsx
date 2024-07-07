@@ -9,7 +9,9 @@ const AgentDetailCard = ({ icon, title, subTitle, url }) => {
             <i className={`${icon} flex text-4xl text-primary-orange`}></i>
           </div>
 
-          <h3 className="text-center font-semibold text-[18px]">{title}</h3>
+          <h3 className="text-center font-semibold text-base md:text-[18px] leading-[20px]">
+            {title}
+          </h3>
           <p className="text-center">{subTitle}</p>
         </div>
       </a>
