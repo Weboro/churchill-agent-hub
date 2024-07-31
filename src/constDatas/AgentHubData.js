@@ -8,30 +8,17 @@ export const AgentHubData = [
   },
   {
     title: "Refund Request Form",
-    description:
-      "Mohak to create a Zoho form that automatically creates Pipelines",
+    description: "",
     link: "https://forms.zohopublic.com.au/CIHE/form/Refund/formperma/0InT099rx3HO6tfccMlx2R5tZQmV9MOOekjGBUjMx1g",
     icon: "fi fi-tr-document",
   },
   {
-    title: "Request Churchill Press Kit",
-    description:
-      "Public download link to be provided by Om, hosted on OneDrive",
-    link: "",
+    title: "Churchill Media Kit",
+    description: "",
+    link: "https://churchillinstituteofhighere-my.sharepoint.com/personal/marketing_churchill_nsw_edu_au/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fmarketing%5Fchurchill%5Fnsw%5Fedu%5Fau%2FDocuments%2FChurchill%20Media%20Kit&ga=1",
     icon: "fi fi-tr-journal-alt",
   },
-  // {
-  //   title: "Track Refund Request",
-  //   description: "",
-  //   link: null,
-  //   icon: "fi fi-tr-refund-alt",
-  // },
-  // {
-  //   title: "Track Student Application Status",
-  //   description: "",
-  //   link: null,
-  //   icon: "fi fi-tr-file-circle-info",
-  // },
+
   {
     title: "Agent Application Form",
     description: "",
@@ -57,3 +44,15 @@ export const AgentHubData = [
     icon: "fi fi-tr-benefit-porcent",
   },
 ];
+// {
+//   title: "Track Refund Request",
+//   description: "",
+//   link: null,
+//   icon: "fi fi-tr-refund-alt",
+// },
+// {
+//   title: "Track Student Application Status",
+//   description: "",
+//   link: null,
+//   icon: "fi fi-tr-file-circle-info",
+// },
