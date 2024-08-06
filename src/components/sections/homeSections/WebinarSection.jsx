@@ -7,12 +7,10 @@ const webinarData = [
   {
     id: 0,
     title: "Upcoming Webinar",
-    content: "",
   },
   {
     id: 1,
     title: "Recorded Webinar",
-    content: "",
   },
 ];
 

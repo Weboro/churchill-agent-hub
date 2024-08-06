@@ -13,6 +13,12 @@ import AccordionComponent from "./accordion/AccordionComponent";
 import NewsSection from "./sections/homeSections/NewsSection";
 import NewsItemCard from "./cards/NewsItemCard";
 import PatternBannerCard from "./cards/PatternBannerCard";
+//
+import NewsPage from "./pages/NewsPage";
+import NewsItemPage from "./sections/NewsSections/NewsItemPage";
+import MoreNewsSection from "./sections/NewsSections/MoreNewsSection";
+import DataNotFound from "./animations/DataNotFound";
+import Loading from "./animations/Loading";
 
 export {
   Button,
@@ -30,4 +36,9 @@ export {
   NewsSection,
   NewsItemCard,
   PatternBannerCard,
+  NewsPage,
+  NewsItemPage,
+  MoreNewsSection,
+  DataNotFound,
+  Loading,
 };

@@ -20,12 +20,13 @@ const monthArray = [
 ];
 
 const NewsItemCard = ({
-  image,
+  tags,
   title,
-  description,
   slug,
-  catagories,
   date,
+  description,
+  rich_text,
+  image,
 }) => {
   const newDate = new Date(date);
 
@@ -60,7 +61,7 @@ const NewsItemCard = ({
         </Link>
 
         <div
-          dangerouslySetInnerHTML={{ __html: description }}
+          dangerouslySetInnerHTML={{ __html: rich_text }}
           className="line-clamp-4"
         />
 
@@ -74,12 +75,12 @@ const NewsItemCard = ({
         </Link>
 
         <div className="flex flex-row flex-wrap gap-2">
-          {catagories?.map((item, index) => (
+          {tags?.map((item, index) => (
             <p
               key={index}
               className="font-semibold bg-[#F2CF9C] text-[#2C2B4B] rounded-full text-[14px] px-3 py-1 h-fit"
             >
-              {item?.title}
+              {item?.name}
             </p>
           ))}
         </div>

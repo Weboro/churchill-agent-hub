@@ -6,7 +6,9 @@ const AgentDetailCard = ({ icon, title, subTitle, url }) => {
       <a href={url === null ? null : url} target="_blank">
         <div className="flex flex-col gap-3 justify-center items-center cursor-pointer">
           <div className="w-[4.5rem] aspect-square rounded-full grid place-items-center bg-white group-hover:shadow-sm transition-all">
-            <i className={`${icon} flex text-4xl text-primary-orange`}></i>
+            <i
+              className={`${icon} w-[4.5rem] aspect-square flex text-4xl text-primary-orange`}
+            ></i>
           </div>
 
           <h3 className="text-center font-semibold text-base md:text-[18px] leading-[20px]">

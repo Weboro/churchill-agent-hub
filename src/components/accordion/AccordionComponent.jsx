@@ -19,8 +19,6 @@ const AccordionComponent = ({ data }) => {
         {data?.map((item, index) => {
           const isActive = activeIndex == index ? true : false;
 
-          const videoUrl = item.youtubeIframe.split("v=")[1];
-
           return (
             <div key={index} className="border">
               <h2
@@ -29,7 +27,7 @@ const AccordionComponent = ({ data }) => {
                   index === activeIndex ? "bg-neutral-50" : ""
                 }`}
               >
-                <span>{item.title}</span>
+                <span>{item?.title}</span>
                 <span
                   className={`transition-all ${isActive ? "rotate-180" : ""}`}
                 >
@@ -41,7 +39,7 @@ const AccordionComponent = ({ data }) => {
                 <div className="bg-neutral-50 p-4">
                   <div
                     className="py-2 mb-4 rich-text-container "
-                    dangerouslySetInnerHTML={{ __html: item.description }}
+                    dangerouslySetInnerHTML={{ __html: item?.description }}
                   />
 
                   <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
@@ -49,18 +47,18 @@ const AccordionComponent = ({ data }) => {
                       <Image
                         width={300}
                         height={300}
-                        src={item.person.photo}
-                        alt={item.title}
+                        src={item?.person_photo}
+                        alt={item?.title}
                         className="w-20 h-20 object-cover rounded-full"
                       />
                       <div>
-                        <p className="text-lg font-bold">{item.person.name}</p>
-                        <p>{item.person.post}</p>
+                        <p className="text-lg font-bold">{item?.person_name}</p>
+                        <p>{item?.person_post}</p>
                       </div>
                     </div>
                     <button
                       onClick={() => {
-                        setVideoUrl(videoUrl);
+                        setVideoUrl(item?.youtube_id);
                         setIsFullScreenShown(!isFullScreenShown);
                       }}
                       className="bg-primary-orange rounded-lg px-8 py-3 font-bold"

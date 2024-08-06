@@ -28,31 +28,19 @@ export const AgentHubData = [
   {
     title: "Request Revised Offer Letter",
     description: "",
-    link: null,
+    link: "https://agent.churchill.nsw.edu.au",
     icon: "fi fi-tr-envelope-open-text",
   },
   {
     title: "Request Revised CoE",
     description: "",
-    link: null,
+    link: "https://agent.churchill.nsw.edu.au",
     icon: "fi fi-tr-diploma",
   },
   {
     title: "Request Pending Commission Report",
     description: "",
-    link: null,
+    link: "https://agent.churchill.nsw.edu.au",
     icon: "fi fi-tr-benefit-porcent",
   },
 ];
-// {
-//   title: "Track Refund Request",
-//   description: "",
-//   link: null,
-//   icon: "fi fi-tr-refund-alt",
-// },
-// {
-//   title: "Track Student Application Status",
-//   description: "",
-//   link: null,
-//   icon: "fi fi-tr-file-circle-info",
-// },
