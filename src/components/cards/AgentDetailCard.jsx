@@ -7,7 +7,7 @@ const AgentDetailCard = ({ icon, title, subTitle, url }) => {
         <div className="flex flex-col gap-3 justify-center items-center cursor-pointer">
           <div className="w-[4.5rem] aspect-square rounded-full grid place-items-center bg-white group-hover:shadow-sm transition-all">
             <i
-              className={`${icon} w-[4.5rem] aspect-square flex text-4xl text-primary-orange`}
+              className={`${icon} grid place-items-center w-[4.5rem] aspect-square text-4xl text-primary-orange`}
             ></i>
           </div>
 
