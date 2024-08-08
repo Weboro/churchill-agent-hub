@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Footer } from "@/components";
+import { FloaterComponent, Footer } from "@/components";
 
 export const metadata: Metadata = {
   // title: {
@@ -117,6 +117,7 @@ export default function RootLayout({
       <body>
         {/* <Header /> */}
         {children}
+        <FloaterComponent />
         <Footer />
       </body>
     </html>

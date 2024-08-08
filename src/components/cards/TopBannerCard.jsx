@@ -25,7 +25,7 @@ const TopBannerCard = () => {
           <h2 className="text-3xl md:text-5xl font-bold text-center text-[#eb9320]">
             How can we Help you?
           </h2>
-          <div className="relative bg-neutral-100  rounded-full md:w-[24rem] md:mx-auto overflow-hidden">
+          {/* <div className="relative bg-neutral-100  rounded-full md:w-[24rem] md:mx-auto overflow-hidden">
             <input
               type="text"
               placeholder="Search."
@@ -34,7 +34,7 @@ const TopBannerCard = () => {
             <div className="h-12 w-12 absolute top-1/2 -translate-y-1/2 right-0 grid place-items-center rounded-full bg-primary-orange">
               <i className="fi fi-br-search flex"></i>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

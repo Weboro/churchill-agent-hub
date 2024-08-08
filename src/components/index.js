@@ -20,6 +20,7 @@ import MoreNewsSection from "./sections/NewsSections/MoreNewsSection";
 import DataNotFound from "./animations/DataNotFound";
 import Loading from "./animations/Loading";
 import StaffPage from "./sections/staffDirectorySections/StaffPage";
+import FloaterComponent from "./globals/floater/FloaterComponent";
 
 export {
   Button,
@@ -43,4 +44,5 @@ export {
   DataNotFound,
   Loading,
   StaffPage,
+  FloaterComponent,
 };

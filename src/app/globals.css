@@ -297,3 +297,30 @@ body {
   color: #eff3f5;
   font-weight: 600;
 }
+/*  */
+/*  */
+.gs-image-box,
+.gs-web-image-box {
+  display: none;
+}
+.gcsc-branding,
+.gsc-above-wrapper-area {
+  display: none;
+}
+
+.gsc-control-cse.gsc-control-cse-en {
+  background: none;
+  border: none;
+}
+
+.gsc-control-cse.gsc-control-cse-en td.gsc-search-button,
+.gsc-control-cse.gsc-control-cse-en .gsc-input-box,
+.gsc-control-cse.gsc-control-cse-en td.gsc-input {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gsc-control-cse.gsc-control-cse-en td.gsc-search-button {
+  margin-left: 1rem;
+}
