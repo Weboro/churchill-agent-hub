@@ -6,6 +6,9 @@ import WebinarSection from "./sections/homeSections/WebinarSection";
 import NewsLetterSection from "./sections/homeSections/NewsLetterSection";
 import TopBannerCard from "./cards/TopBannerCard";
 import AgentDataSection from "./sections/homeSections/AgentDataSection";
+import AgentTraining from "./sections/homeSections/AgentTraining";
+import NeedHelp from "./sections/homeSections/NeedHelp";
+import MarketingKit from "./sections/homeSections/MarketingKit";
 import AgentDetailCard from "./cards/AgentDetailCard";
 import RecordedWebinarSection from "./sections/homeSections/RecordedWebinarSection";
 import UpcomingWebinarSection from "./sections/homeSections/UpcomingWebinarSection";
@@ -30,4 +33,7 @@ export {
   NewsSection,
   NewsItemCard,
   PatternBannerCard,
+  MarketingKit,
+  NeedHelp,
+  AgentTraining,
 };

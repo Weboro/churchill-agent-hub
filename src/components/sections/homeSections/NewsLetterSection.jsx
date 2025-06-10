@@ -6,13 +6,14 @@ import { FaArrowRight } from "react-icons/fa";
 
 const NewsLetterSection = () => {
   return (
-    <div className="container px-5 relative mx-auto mb-[48px] rounded-md group ">
+
+    <div className="container-blog mx-auto px-5 relative mb-[48px] rounded-md group ">
       <div className="flex flex-col md:flex-row bg-[#F3E4E4] relative overflow-hidden hover-shadow rounded-md">
         <div className="flex z-[10] flex-1 flex-col gap-6 pt-8 pl-8 md:py-20 md:pl-20">
           <h3 className="relative leading-10 font-bold text-[36px]  text-[#2C2B4B]">
-            Join our <br /> Newsletter
+            Be in the Know.
           </h3>
-          <p>Get updated about our latest news, events, updates and more.</p>
+          <p>For updates about our latest news, events, and more.</p>
           <Link
             href={`https://zfrmz.com.au/DtG2T10jdX7f8egPhVzt`}
             target="_blank"

@@ -5,6 +5,9 @@ import {
   NewsLetterSection,
   NewsSection,
   Button,
+  MarketingKit,
+  NeedHelp,
+  AgentTraining,
 } from "@/components";
 
 import { FaArrowRight } from "react-icons/fa";
@@ -18,10 +21,14 @@ const Home = () => {
 
       <div className="flex flex-col gap-[44px]">
         <AgentDataSection />
+        <NeedHelp />
+        <AgentTraining />
+        <MarketingKit />
 
-        <WebinarSection />
 
-        <div className="container mx-auto">
+        {/* <WebinarSection /> */}
+
+        {/* <div className="container mx-auto">
           <h2 className="text-3xl font-bold mb-12 w-fit mx-auto text-center">
             Browse Latest News
           </h2>
@@ -32,7 +39,7 @@ const Home = () => {
               Browse More News
             </button>
           </a>
-        </div>
+        </div> */}
 
         <NewsLetterSection />
       </div>
