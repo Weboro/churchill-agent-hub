@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Calculator, FileText, ExternalLink } from 'lucide-react';
 
-const page = () => {
+const CommissionCalculator = () => {
     const [formData, setFormData] = useState({
         studentId: '',
         studentName: '',
@@ -398,4 +398,4 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
     );
 };
 
-export default page;
+export default CommissionCalculator;
