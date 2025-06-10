@@ -15,7 +15,7 @@ const AgentInductionCourse = () => {
         {
             id: 0,
             name: "Genuine Student Test (GST)",
-            videoId: "xo34tlw7pM4", // Replace with actual YouTube video ID
+            videoId: "xo34tlw7pM4",
             resources: [],
             questions: [
                 {
@@ -78,7 +78,7 @@ const AgentInductionCourse = () => {
         {
             id: 1,
             name: "Simplified Student Visa Framework (SSVF)",
-            videoId: "t-mXXcipaOk", // Replace with actual YouTube video ID
+            videoId: "t-mXXcipaOk",
             resources: [
                 { name: "Learn more on SSVF – Department of Home Affairs", url: "https://immi.homeaffairs.gov.au/what-we-do/education-program/what-we-do/simplified-student-visa-framework" },
                 { name: "Financial Capacity Requirements", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500#Eligibility" },
@@ -146,7 +146,7 @@ const AgentInductionCourse = () => {
         {
             id: 2,
             name: " Biosecurity‑Related Visa Cancellations",
-            videoId: "2BUje836Q7Q", // Replace with actual YouTube video ID
+            videoId: "2BUje836Q7Q",
             resources: [],
             questions: [
                 {
@@ -209,7 +209,7 @@ const AgentInductionCourse = () => {
         {
             id: 3,
             name: "Module 4 Test",
-            videoId: "2TqP6q5wuaA", // Replace with actual YouTube video ID
+            videoId: "2TqP6q5wuaA",
             resources: [],
             questions: [
                 {
@@ -315,7 +315,6 @@ const AgentInductionCourse = () => {
             setCurrentModule(currentModule + 1);
             setCurrentSection('video');
         } else {
-            // Calculate final score
             let totalCorrect = 0;
             modules.forEach(module => {
                 module.questions.forEach(question => {
@@ -454,7 +453,6 @@ const AgentInductionCourse = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Progress Bar */}
             <div className="bg-white shadow-sm border-b">
                 <div className="max-w-6xl mx-auto px-4 py-4">
                     <div className="flex items-center justify-between mb-2">
@@ -472,7 +470,6 @@ const AgentInductionCourse = () => {
 
             <div className="max-w-6xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    {/* Module Navigation */}
                     <div className="lg:col-span-1 hidden lg:block ">
                         <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8">
                             <h3 className="text-lg font-semibold text-gray-800 mb-4">Course Modules</h3>
@@ -503,10 +500,8 @@ const AgentInductionCourse = () => {
                         </div>
                     </div>
 
-                    {/* Main Content Area */}
                     <div className="lg:col-span-3">
                         <div className="bg-white rounded-lg shadow-sm">
-                            {/* Module Header */}
                             <div className="border-b border-gray-200 p-6">
                                 <div className="flex items-center justify-between mb-4">
                                     <h1 className="text-2xl font-bold text-gray-800">
@@ -539,11 +534,9 @@ const AgentInductionCourse = () => {
                                 </div>
                             </div>
 
-                            {/* Content Area */}
                             <div className="p-6">
                                 {currentSection === 'video' && (
                                     <div className="space-y-6">
-                                        {/* Video */}
                                         <div className="aspect-w-16 aspect-h-9">
                                             <iframe
                                                 src={`https://www.youtube.com/embed/${modules[currentModule].videoId}`}
@@ -554,7 +547,6 @@ const AgentInductionCourse = () => {
                                             ></iframe>
                                         </div>
 
-                                        {/* Video Confirmation */}
                                         <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                                             <label className="flex items-center">
                                                 <input
@@ -573,7 +565,6 @@ const AgentInductionCourse = () => {
                                             </label>
                                         </div>
 
-                                        {/* Resources */}
                                         <div>
                                             <h3 className="text-lg font-semibold text-gray-800 mb-4">Resources</h3>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -592,7 +583,6 @@ const AgentInductionCourse = () => {
                                             </div>
                                         </div>
 
-                                        {/* Next Button */}
                                         {videoWatched[currentModule] && (
                                             <div className="flex justify-end">
                                                 <button
@@ -646,7 +636,6 @@ const AgentInductionCourse = () => {
                                             </div>
                                         ))}
 
-                                        {/* Complete Module Button */}
                                         <div className="flex justify-end">
                                             <button
                                                 onClick={completeModule}

@@ -12,17 +12,12 @@ export const QuickLinksData = [
     icon: "fi fi-tr-document",
   },
   {
-    title: "Marketing Flyers",
+    title: "Agent App",
     description: "",
     link: "",
     icon: "fi fi-tr-journal-alt",
   },
-  {
-    title: "GST Checklist",
-    description: "",
-    link: "",
-    icon: "fi fi-tr-ballot-check",
-  },
+
 ];
 
 
@@ -34,22 +29,16 @@ export const MarketingKitData = [
     icon: "fi fi-tr-images",
   },
   {
-    title: "Fee Sheet",
+    title: "Churchill Institute's logo",
     description: "",
     link: "https://forms.zohopublic.com.au/CIHE/form/Refund/formperma/0InT099rx3HO6tfccMlx2R5tZQmV9MOOekjGBUjMx1g",
-    icon: "fi fi-tr-usd-circle",
+    icon: "fi fi-tr-customize-computer",
   },
   {
-    title: "Reel Scripts",
+    title: "Promotional videos",
     description: "",
     link: "",
     icon: "fi fi-tr-films",
-  },
-  {
-    title: "Download ZIP",
-    description: "",
-    link: "",
-    icon: "fi fi-tr-file-zipper",
   },
 ];
 
