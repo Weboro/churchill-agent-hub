@@ -12,7 +12,7 @@ export const QuickLinksData = [
     icon: "fi fi-tr-document",
   },
   {
-    title: "Agent App",
+    title: "Agent Application",
     description: "",
     link: "https://forms.zohopublic.com.au/CIHE/form/AgencyRequestApplication1/formperma/1PRnx2lGlk2LDSJGOpTbJcnB4ZrfkPNwaOUHLkyB93Q",
     icon: "fi fi-tr-journal-alt",
