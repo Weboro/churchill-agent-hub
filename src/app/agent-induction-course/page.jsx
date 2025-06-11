@@ -13,87 +13,99 @@ const AgentInductionCourse = () => {
 
     const modules = [
         {
-            id: 0,
-            name: "Genuine Student Test (GST)",
-            videoId: "xo34tlw7pM4",
-            resources: [],
-            questions: [
+            "id": 0,
+            "name": "Genuine Student Test (GST)",
+            "videoId": "xo34tlw7pM4",
+            "resources": [],
+            "questions": [
                 {
-                    id: 'q1',
-                    question: 'Which of the following best describes the purpose of the Genuine Student Test (GST)?',
-                    options: [
-                        'To assess if a student has enough English skills to study in Australia',
-                        'To determine whether an applicant genuinely intends to study and has realistic expectations of study and life in Australia',
-                        'To compare Australian and home‑country tuition fees',
-                        'To allocate a risk rating to an education provider'
+                    "id": "q1",
+                    "question": "Which of the following best describes the purpose of the Genuine Student Test (GST)?",
+                    "options": [
+                        "To assess if a student has enough English skills to study in Australia",
+                        "To determine whether an applicant genuinely intends to study and has realistic expectations of study and life in Australia",
+                        "To compare Australian and home-country tuition fees",
+                        "To allocate a risk rating to an education provider"
                     ],
-                    correct: 1
+                    "correct": 1
                 },
                 {
-                    id: 'q2',
-                    question: 'Which criterion focuses on why an applicant is not studying a similar course in their home country?',
-                    options: [
-                        'Circumstances in Australia',
-                        'Immigration history',
-                        'Circumstances in the home country',
-                        'Value of the course to the student\'s future'
+                    "id": "q2",
+                    "question": "Which criterion focuses on why an applicant is not studying a similar course in their home country?",
+                    "options": [
+                        "Circumstances in Australia",
+                        "Immigration history",
+                        "Circumstances in the home country",
+                        "Value of the course to the student's future"
                     ],
-                    correct: 2
+                    "correct": 2
                 },
                 {
-                    id: 'q3',
-                    question: 'A genuine student must demonstrate:',
-                    options: [
-                        'Guaranteed permanent residency',
-                        'Unlimited access to part‑time work income',
-                        'Authentic and verifiable documentation',
-                        'Military service exemption'
+                    "id": "q3",
+                    "question": "A genuine student must demonstrate:",
+                    "options": [
+                        "Guaranteed permanent residency",
+                        "Unlimited access to part-time work income",
+                        "Authentic and verifiable documentation",
+                        "Military service exemption"
                     ],
-                    correct: 2
+                    "correct": 2
                 },
                 {
-                    id: 'q4',
-                    question: 'Which of the following would negatively impact the GST assessment?',
-                    options: [
-                        'Clear post‑study career plan',
-                        'Strong family ties in the home country',
-                        'Unexplained study gaps',
-                        'Course relevance to prior study'
+                    "id": "q4",
+                    "question": "Which of the following would negatively impact the GST assessment?",
+                    "options": [
+                        "Clear post-study career plan",
+                        "Strong family ties in the home country",
+                        "Unexplained study gaps",
+                        "Course relevance to prior study"
                     ],
-                    correct: 2
+                    "correct": 2
                 },
                 {
-                    id: 'q5',
-                    question: 'When assessing the value of the course to the student’s future, immigration officers consider:',
-                    options: [
-                        'Expected remuneration after graduation',
-                        'Provider risk rating',
-                        'Agent commission level',
-                        'Length of the student’s holiday breaks'
+                    "id": "q5",
+                    "question": "When assessing the value of the course to the student’s future, immigration officers consider:",
+                    "options": [
+                        "Expected remuneration after graduation",
+                        "Provider risk rating",
+                        "Agent commission level",
+                        "Length of the student’s holiday breaks"
                     ],
-                    correct: 2
+                    "correct": 0
                 }
             ]
         },
         {
-            id: 1,
-            name: "Simplified Student Visa Framework (SSVF)",
-            videoId: "t-mXXcipaOk",
-            resources: [
-                { name: "Learn more on SSVF – Department of Home Affairs", url: "https://immi.homeaffairs.gov.au/what-we-do/education-program/what-we-do/simplified-student-visa-framework" },
-                { name: "Financial Capacity Requirements", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500#Eligibility" },
-                { name: "English Language Requirement", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500#Eligibility" },
-                { name: "Visa Application Process", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500#HowTo" }
+            "id": 1,
+            "name": "Simplified Student Visa Framework (SSVF)",
+            "videoId": "t-mXXcipaOk",
+            "resources": [
+                {
+                    "name": "Learn more on SSVF – Department of Home Affairs",
+                    "url": "https://immi.homeaffairs.gov.au/what-we-do/education-program/what-we-do/simplified-student-visa-framework"
+                },
+                {
+                    "name": "Financial Capacity Requirements",
+                    "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500#Eligibility"
+                },
+                {
+                    "name": "English Language Requirement",
+                    "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500#Eligibility"
+                },
+                {
+                    "name": "Visa Application Process",
+                    "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500#HowTo"
+                }
             ],
-            questions: [
+            "questions": [
                 {
                     "id": "q6",
-                    "question": "The SSVF replaced which two previous systems on July 2016?",
+                    "question": "The SSVF replaced which two previous systems on 1 July 2016?",
                     "options": [
+                        "SVP and AL",
                         "ESOS and CRICOS",
                         "PRISMS and DHA",
-                        "COE and OSHC",
-                        "None of the above"
+                        "COE and OSHC"
                     ],
                     "correct": 0
                 },
@@ -144,14 +156,14 @@ const AgentInductionCourse = () => {
             ]
         },
         {
-            id: 2,
-            name: " Biosecurity‑Related Visa Cancellations",
-            videoId: "2BUje836Q7Q",
-            resources: [],
-            questions: [
+            "id": 2,
+            "name": "Biosecurity-Related Visa Cancellations",
+            "videoId": "2BUje836Q7Q",
+            "resources": [],
+            "questions": [
                 {
                     "id": "q11",
-                    "question": "From January 2021, a student visa can be cancelled at the border for which action?",
+                    "question": "From 1 January 2021, a student visa can be cancelled at the border for which action?",
                     "options": [
                         "Travelling with more than AUD 10,000 cash",
                         "Failing to declare food items on the Incoming Passenger Card",
@@ -191,7 +203,7 @@ const AgentInductionCourse = () => {
                         "A fine but no visa impact",
                         "A requirement to attend an interview only"
                     ],
-                    "correct": 2
+                    "correct": 1
                 },
                 {
                     "id": "q15",
@@ -207,11 +219,11 @@ const AgentInductionCourse = () => {
             ]
         },
         {
-            id: 3,
-            name: "Module 4 Test",
-            videoId: "2TqP6q5wuaA",
-            resources: [],
-            questions: [
+            "id": 3,
+            "name": "Agent Responsibilities & Ethical Standards",
+            "videoId": "2TqP6q5wuaA",
+            "resources": [],
+            "questions": [
                 {
                     "id": "q16",
                     "question": "According to the Australian Agent Code of Ethics, agents must always act:",
@@ -267,9 +279,8 @@ const AgentInductionCourse = () => {
                     ],
                     "correct": 1
                 }
-
             ]
-        },
+        }
     ];
 
     const totalQuestions = modules.reduce((sum, module) => sum + module.questions.length, 0);
