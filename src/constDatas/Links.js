@@ -1,6 +1,6 @@
 export const QuickLinksData = [
   {
-    title: "Student Application",
+    title: "New Student Application",
     description: "",
     link: "https://churchill.nsw.edu.au/assets/apply-at-churchill.pdf",
     icon: "fi fi-tr-student",
@@ -12,7 +12,7 @@ export const QuickLinksData = [
     icon: "fi fi-tr-document",
   },
   {
-    title: "Agent Application",
+    title: "New Agent Application",
     description: "",
     link: "https://forms.zohopublic.com.au/CIHE/form/AgencyRequestApplication1/formperma/1PRnx2lGlk2LDSJGOpTbJcnB4ZrfkPNwaOUHLkyB93Q",
     icon: "fi fi-tr-journal-alt",
