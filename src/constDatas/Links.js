@@ -25,7 +25,7 @@ export const MarketingKitData = [
   {
     title: "Photo Pack",
     description: "",
-    link: "hhttps://churchillinstituteofhighere-my.sharepoint.com/:f:/g/personal/marketing_churchill_nsw_edu_au/EhmCry00Uv5AknYooXoFT9EB5HBw3GbKzpEQ-WAulmgLOw?e=97cTg8",
+    link: "https://churchillinstituteofhighere-my.sharepoint.com/:f:/g/personal/marketing_churchill_nsw_edu_au/EhmCry00Uv5AknYooXoFT9EB5HBw3GbKzpEQ-WAulmgLOw?e=97cTg8",
     icon: "fi fi-tr-images",
   },
   {
