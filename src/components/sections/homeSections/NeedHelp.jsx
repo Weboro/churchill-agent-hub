@@ -34,28 +34,27 @@ const NeedHelp = () => {
                 key={index}
                 className="bg-neutral-50 p-1 rounded-md flex items-center gap-2 overflow-hidden"
               >
-                <div className=" aspect-square ml-2 rounded-full bg-primary-orange/25 grid place-items-center ">
-                  <i
-                    className={`${item.icon} w-[50px] h-[50px] grid place-items-center m-0 text-3xl`}
-                  ></i>
-                </div>
 
-                <div className="pl-2 py-2">
+                <div className="pl-4 py-2">
                   <h2 className="font-bold text-xl capitalize text-left mb-1">
                     {item.title}
                   </h2>
 
                   {item.email && (
-                    <a href={`mailto:${item.email}`} className="block">
-                      <p className="font-semibold break-words text-wrap text-sm">
+                    <a href={`mailto:${item.email}`} className="block border border-orange-400 rounded-md bg-orange-50 p-2 mb-2">
+                      <p className="font-semibold break-words text-wrap text-sm flex align-middle gap-2">
+                        <i class="fi fi-rr-phone-call flex align-middle items-center"></i>
                         {item.email}
                       </p>
                     </a>
                   )}
 
                   {item.phone && (
-                    <a href={`tel:${item.phone}`} className="block w-fit">
-                      <span className="font-semibold text-sm">{item.phone}</span>
+                    <a href={`tel:${item.phone}`} className="block border border-orange-400 rounded-md bg-orange-50 p-2 ">
+                      <p className="font-semibold break-words text-wrap text-sm flex align-middle gap-2">
+                        <i class="fi fi-rr-envelope flex align-middle items-center"></i>
+                        {item.phone}
+                      </p>
                     </a>
                   )}
                 </div>

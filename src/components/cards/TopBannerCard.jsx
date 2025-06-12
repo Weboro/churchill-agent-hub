@@ -11,18 +11,18 @@ const TopBannerCard = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-      className="lg:h-[50vh] h-[44vh] flex items-center"
+      className="lg:h-[20vh] h-[30vh] flex items-center"
     >
       <div className="container mx-auto px-5">
         <div className="flex flex-col gap-8 ">
           <Image
             src="/assets/agent-hub-logo.svg"
-            width={300}
-            height={200}
+            width={350}
+            height={350}
             alt="logo"
-            className="mx-auto w-[80%] md:w-[18rem]"
+            className="mx-auto"
           />
-          <h2 className="text-3xl md:text-5xl font-bold text-center text-[#eb9320]">
+          {/* <h2 className="text-3xl md:text-5xl font-bold text-center text-[#eb9320]">
             How can we Help you?
           </h2>
           <div className="relative bg-neutral-100  rounded-full md:w-[24rem] md:mx-auto overflow-hidden">
@@ -34,7 +34,7 @@ const TopBannerCard = () => {
             <div className="h-12 w-12 absolute top-1/2 -translate-y-1/2 right-0 grid place-items-center rounded-full bg-primary-orange">
               <i className="fi fi-br-search flex"></i>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

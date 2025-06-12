@@ -1,8 +1,9 @@
 "use client";
+
 import React, { useState } from 'react';
 import { Calculator, FileText, ExternalLink } from 'lucide-react';
 
-const CommissionCalculator = () => {
+export default function CommissionCalculator() {
     const [formData, setFormData] = useState({
         studentId: '',
         studentName: '',
@@ -104,8 +105,12 @@ const CommissionCalculator = () => {
             return;
         }
 
-        // Calculate commission
-        const claimableBase = fee - incentive;
+        // Calculate commission using correct formula
+        // (Student Fee Payment - Student Enrollment Fees - Student SAAF fee - Incentive Given) × 20%
+        const enrollmentFee = parseFloat(formData.enrollmentFee) || 0;
+        const saafFee = parseFloat(formData.saafFee) || 0;
+
+        const claimableBase = fee - enrollmentFee - saafFee - incentive;
         const baseCommission = claimableBase * 0.20;
 
         let gstAmount = 0;
@@ -156,7 +161,6 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
     };
 
     return (
-
         <div className="min-h-screen bg-gray-50 py-8 px-4">
             <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg border-t-4 border-orange-500">
                 <div className="p-8">
@@ -367,6 +371,15 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
 
                                     {formData.location === "australia" && formData.gstRegistered === "yes" ? (
                                         <div className="bg-white p-4 rounded-lg border">
+                                            <div className="text-sm text-gray-600 mb-3">
+                                                <div>Student Fee Payment: AUD {formData.feePayment}</div>
+                                                <div>Less: Enrollment Fee: AUD {formData.enrollmentFee}</div>
+                                                <div>Less: SAAF Fee: AUD {formData.saafFee}</div>
+                                                <div>Less: Incentive: AUD {formData.incentive}</div>
+                                                <div className="border-t pt-2 font-semibold">
+                                                    Claimable Base: AUD {(parseFloat(formData.feePayment) - parseFloat(formData.enrollmentFee) - parseFloat(formData.saafFee) - parseFloat(formData.incentive)).toFixed(2)}
+                                                </div>
+                                            </div>
                                             <div className="flex justify-between mb-2">
                                                 <span>GST (10%):</span>
                                                 <span>AUD {result.gstAmount.toFixed(2)}</span>
@@ -378,6 +391,15 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                                         </div>
                                     ) : (
                                         <div className="text-center">
+                                            <div className="text-sm text-gray-600 mb-3">
+                                                <div>Student Fee Payment: AUD {formData.feePayment}</div>
+                                                <div>Less: Enrollment Fee: AUD {formData.enrollmentFee}</div>
+                                                <div>Less: SAAF Fee: AUD {formData.saafFee}</div>
+                                                <div>Less: Incentive: AUD {formData.incentive}</div>
+                                                <div className="border-t pt-2 font-semibold">
+                                                    Claimable Base: AUD {(parseFloat(formData.feePayment) - parseFloat(formData.enrollmentFee) - parseFloat(formData.saafFee) - parseFloat(formData.incentive)).toFixed(2)}
+                                                </div>
+                                            </div>
                                             <p className="text-gray-600 mb-2">
                                                 {formData.location === "overseas"
                                                     ? "No GST applicable (Overseas)"
@@ -397,5 +419,3 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
         </div>
     );
 };
-
-export default CommissionCalculator;

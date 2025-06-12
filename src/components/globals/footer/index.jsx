@@ -7,7 +7,7 @@ import { MdEmail } from "react-icons/md";
 
 const Footer = () => {
   return (
-    <div className="mt-[32px] lg:mt-[64px]">
+    <div>
       <div
         className="bg-[#606060] py-[64px]"
         style={{
@@ -229,8 +229,8 @@ const Footer = () => {
           </div>
           <hr />
           <p className="text-center container mx-auto px-5 font-semibold text-[15px] py-4">
-            Copyright © 2024 Mpika Holdings Pty Ltd t/as Churchill Institute of
-            Higher Education. 
+            Copyright © {new Date().getFullYear()} Mpika Holdings Pty Ltd t/as Churchill Institute of
+            Higher Education.
           </p>
         </div>
       </div>
