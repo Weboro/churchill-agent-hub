@@ -149,47 +149,29 @@ const AgentInductionCourse = () => {
                     </div>
 
                     {passed ? (
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-8">
-                            <img
-                                src="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif"
-                                alt="Celebration"
-                                className="w-32 h-32 mx-auto mb-4 rounded-lg"
-                                onError={(e) => { e.target.style.display = 'none' }}
-                            />
-                            <p className="text-green-700 font-semibold">
-                                You are now certified as a Churchill Institute Agent!
-                            </p>
-                        </div>
+                        <></>
                     ) : (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8">
-                            <img
-                                src="https://media.giphy.com/media/l2JehQ2GitHGdVG9y/giphy.gif"
-                                alt="Try again"
-                                className="w-32 h-32 mx-auto mb-4 rounded-lg"
-                                onError={(e) => { e.target.style.display = 'none' }}
-                            />
-                            <p className="text-red-700 font-semibold">
-                                Please retake the course to become a certified agent.
-                            </p>
-                        </div>
+                        <>
+                            <button
+                                onClick={() => {
+                                    setCurrentPage('start');
+                                    setCurrentModule(0);
+                                    setCurrentSection('video');
+                                    setModuleProgress({});
+                                    setQuizAnswers({});
+                                    setVideoWatched({});
+                                    setFinalScore(0);
+                                }}
+                                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
+                            >
+                                Start New Attempt
+                            </button>
+                        </>
                     )}
 
-                    <button
-                        onClick={() => {
-                            setCurrentPage('start');
-                            setCurrentModule(0);
-                            setCurrentSection('video');
-                            setModuleProgress({});
-                            setQuizAnswers({});
-                            setVideoWatched({});
-                            setFinalScore(0);
-                        }}
-                        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
-                    >
-                        Start New Attempt
-                    </button>
+
                 </div>
-            </div>
+            </div >
         );
     }
 
