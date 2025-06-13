@@ -11,6 +11,7 @@ const AgentInductionCourse = () => {
     const [quizAnswers, setQuizAnswers] = useState({});
     const [videoWatched, setVideoWatched] = useState({});
     const [finalScore, setFinalScore] = useState(0);
+    const [answerFeedback, setAnswerFeedback] = useState({});
 
 
 
@@ -32,9 +33,21 @@ const AgentInductionCourse = () => {
     };
 
     const handleQuizAnswer = (questionId, answerIndex) => {
+        const currentQuestion = modules[currentModule].questions.find(q => q.id === questionId);
+        const isCorrect = answerIndex === currentQuestion.correct;
+
         setQuizAnswers(prev => ({
             ...prev,
             [questionId]: answerIndex
+        }));
+
+        setAnswerFeedback(prev => ({
+            ...prev,
+            [questionId]: {
+                selected: answerIndex,
+                isCorrect: isCorrect,
+                correctAnswer: currentQuestion.correct
+            }
         }));
     };
 
@@ -161,6 +174,7 @@ const AgentInductionCourse = () => {
                                     setQuizAnswers({});
                                     setVideoWatched({});
                                     setFinalScore(0);
+                                    setAnswerFeedback({});
                                 }}
                                 className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
                             >
@@ -194,7 +208,7 @@ const AgentInductionCourse = () => {
 
             <div className="max-w-6xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    <div className="lg:col-span-1 hidden lg:block ">
+                    <div className="lg:col-span-1 hidden lg:block">
                         <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8">
                             <h3 className="text-lg font-semibold text-gray-800 mb-4">Course Modules</h3>
                             <div className="space-y-3">
@@ -340,22 +354,48 @@ const AgentInductionCourse = () => {
                                                     Q{qIndex + 1}. {question.question}
                                                 </h4>
                                                 <div className="space-y-3">
-                                                    {question.options.map((option, oIndex) => (
-                                                        <label
-                                                            key={oIndex}
-                                                            className="flex items-start p-3 border border-gray-200 rounded-lg hover:bg-white cursor-pointer transition-colors duration-200"
-                                                        >
-                                                            <input
-                                                                type="radio"
-                                                                name={question.id}
-                                                                value={oIndex}
-                                                                checked={quizAnswers[question.id] === oIndex}
-                                                                onChange={() => handleQuizAnswer(question.id, oIndex)}
-                                                                className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500 mt-1"
-                                                            />
-                                                            <span className="ml-3 text-gray-700">{option}</span>
-                                                        </label>
-                                                    ))}
+                                                    {question.options.map((option, oIndex) => {
+                                                        const feedback = answerFeedback[question.id];
+                                                        const isSelected = quizAnswers[question.id] === oIndex;
+                                                        const isCorrect = oIndex === question.correct;
+                                                        const isWrong = feedback && feedback.selected === oIndex && !feedback.isCorrect;
+
+                                                        return (
+                                                            <label
+                                                                key={oIndex}
+                                                                className={`flex items-start p-3 border rounded-lg cursor-pointer transition-colors duration-200 ${isWrong
+                                                                    ? 'border-red-300 bg-red-50'
+                                                                    : isSelected && isCorrect
+                                                                        ? 'border-green-300 bg-green-50'
+                                                                        : 'border-gray-200 hover:bg-white'
+                                                                    }`}
+                                                            >
+                                                                <input
+                                                                    type="radio"
+                                                                    name={question.id}
+                                                                    value={oIndex}
+                                                                    checked={quizAnswers[question.id] === oIndex}
+                                                                    onChange={() => handleQuizAnswer(question.id, oIndex)}
+                                                                    className="w-4 h-4 text-orange-500 border-gray-300 focus:ring-orange-500 mt-1"
+                                                                />
+                                                                <div className="ml-3 flex-1">
+                                                                    <span className="text-gray-700">{option}</span>
+                                                                    {isWrong && (
+                                                                        <div className="mt-2 flex items-center text-red-600 text-sm font-medium">
+                                                                            <XCircle className="w-4 h-4 mr-1" />
+                                                                            You have selected the wrong answer
+                                                                        </div>
+                                                                    )}
+                                                                    {isSelected && isCorrect && (
+                                                                        <div className="mt-2 flex items-center text-green-600 text-sm font-medium">
+                                                                            <CheckCircle className="w-4 h-4 mr-1" />
+                                                                            Correct answer!
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </label>
+                                                        );
+                                                    })}
                                                 </div>
                                             </div>
                                         ))}
