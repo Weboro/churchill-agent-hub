@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ChevronRight, ChevronLeft, CheckCircle, XCircle, Play, ExternalLink, Award, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import { modules } from '@/constDatas/Modules';
+
 const AgentInductionCourse = () => {
     const [currentPage, setCurrentPage] = useState('start');
     const [currentModule, setCurrentModule] = useState(0);
@@ -12,17 +13,86 @@ const AgentInductionCourse = () => {
     const [videoWatched, setVideoWatched] = useState({});
     const [finalScore, setFinalScore] = useState(0);
     const [answerFeedback, setAnswerFeedback] = useState({});
-
-
+    const [agentId, setAgentId] = useState('');
+    const [agentName, setAgentName] = useState('');
+    const [agentEmail, setAgentEmail] = useState('');
+    const [isAgentVerified, setIsAgentVerified] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const totalQuestions = modules.reduce((sum, module) => sum + module.questions.length, 0);
     const completedModules = Object.keys(moduleProgress).filter(key => moduleProgress[key]).length;
     const progressPercentage = (completedModules / modules.length) * 100;
 
+    const verifyAgentId = async () => {
+        if (!agentId.trim()) {
+            setErrorMessage("Please enter an Agent ID");
+            return;
+        }
+
+        setIsLoading(true);
+        setErrorMessage("");
+        setIsAgentVerified(false);
+        setAgentName("");
+        setAgentEmail("");
+
+        try {
+            console.log("🧪 Getting access token...");
+            const tokenResponse = await fetch("/api/zoho/token", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).catch((err) => {
+                console.error("❌ Fetch error for token:", err);
+            });
+
+            if (!tokenResponse || !tokenResponse.ok) {
+                throw new Error("Failed to get access token");
+            }
+
+            const { access_token } = await tokenResponse.json();
+
+            const agentResponse = await fetch("/api/zoho/agent", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    agentId: agentId.trim(),
+                    accessToken: access_token,
+                }),
+            });
+
+            const agentData = await agentResponse.json();
+
+            if (agentResponse.ok && agentData.found) {
+                setAgentName(agentData.agent.name);
+                setAgentEmail(agentData.agent.email);
+                setIsAgentVerified(true);
+                setErrorMessage("");
+            } else {
+                setErrorMessage("Agent ID not found. Please check your Agent ID and try again.");
+                setIsAgentVerified(false);
+            }
+        } catch (error) {
+            console.error("❌ Error verifying agent:", error);
+            setErrorMessage("Failed to verify Agent ID. Please try again.");
+            setIsAgentVerified(false);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
     const handleStartCourse = () => {
-        setCurrentPage('course');
-        setCurrentModule(0);
-        setCurrentSection('video');
+        if (isAgentVerified) {
+            setCurrentPage('course');
+            setCurrentModule(0);
+            setCurrentSection('video');
+        } else {
+            setErrorMessage('Please verify your Agent ID before starting the course.');
+        }
     };
 
     const handleVideoWatched = (moduleId) => {
@@ -93,9 +163,6 @@ const AgentInductionCourse = () => {
             <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center p-4">
                 <div className="max-w-2xl w-full bg-white rounded-lg shadow-xl p-8 text-center">
                     <div className="mb-8">
-                        {/* <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Award className="w-10 h-10 text-white" />
-                        </div> */}
                         <Image
                             src="/assets/agent-hub-logo.svg"
                             width={300}
@@ -116,16 +183,60 @@ const AgentInductionCourse = () => {
                                 <p className="text-gray-700 mb-2">
                                     This is a <strong>mandatory training</strong> for all agents who wish to be part of Churchill Institute of Higher Education.
                                 </p>
-                                {/* <p className="text-red-600 font-semibold">
-                                    Failure to complete this course will result in rejection of Agent Application.
-                                </p> */}
                             </div>
                         </div>
                     </div>
 
+                    <div className="space-y-4 mb-8">
+                        <div>
+                            <label htmlFor="agentId" className="block text-sm font-medium text-gray-700 mb-1">
+                                Agent ID
+                            </label>
+                            <input
+                                id="agentId"
+                                type="text"
+                                value={agentId}
+                                onChange={(e) => setAgentId(e.target.value)}
+                                onBlur={verifyAgentId}
+                                placeholder="Enter your Agent ID (e.g., RP-207)"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                disabled={isLoading}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="agentName" className="block text-sm font-medium text-gray-700 mb-1">
+                                Name
+                            </label>
+                            <input
+                                id="agentName"
+                                type="text"
+                                value={agentName}
+                                readOnly
+                                placeholder="Name will be auto-filled"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="agentEmail" className="block text-sm font-medium text-gray-700 mb-1">
+                                Email
+                            </label>
+                            <input
+                                id="agentEmail"
+                                type="email"
+                                value={agentEmail}
+                                readOnly
+                                placeholder="Email will be auto-filled"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+                            />
+                        </div>
+                        {isLoading && <p className="text-gray-600 text-sm">Verifying Agent ID...</p>}
+                        {errorMessage && <p className="text-red-600 text-sm">{errorMessage}</p>}
+                    </div>
+
                     <button
                         onClick={handleStartCourse}
-                        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-200 flex items-center justify-center mx-auto"
+                        disabled={!isAgentVerified || isLoading}
+                        className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-200 flex items-center justify-center mx-auto"
                     >
                         Start Training
                         <ChevronRight className="w-5 h-5 ml-2" />
@@ -146,46 +257,44 @@ const AgentInductionCourse = () => {
                         ) : (
                             <XCircle className="w-20 h-20 text-red-500 mx-auto mb-4" />
                         )}
-
                         <h1 className="text-3xl font-bold text-gray-800 mb-4">
                             {passed ? 'Congratulations!' : 'Course Not Completed'}
                         </h1>
-
                         <div className="text-6xl font-bold text-orange-500 mb-4">
                             {finalScore}%
                         </div>
-
                         <p className="text-lg text-gray-600 mb-8">
                             You scored {finalScore}% on the Agent Induction Course
                             {passed ? '. You have successfully completed the training!' : '. You need 70% to pass.'}
                         </p>
                     </div>
-
                     {passed ? (
                         <></>
                     ) : (
-                        <>
-                            <button
-                                onClick={() => {
-                                    setCurrentPage('start');
-                                    setCurrentModule(0);
-                                    setCurrentSection('video');
-                                    setModuleProgress({});
-                                    setQuizAnswers({});
-                                    setVideoWatched({});
-                                    setFinalScore(0);
-                                    setAnswerFeedback({});
-                                }}
-                                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
-                            >
-                                Start New Attempt
-                            </button>
-                        </>
+                        <button
+                            onClick={() => {
+                                setCurrentPage('start');
+                                setCurrentModule(0);
+                                setCurrentSection('video');
+                                setModuleProgress({});
+                                setQuizAnswers({});
+                                setVideoWatched({});
+                                setFinalScore(0);
+                                setAnswerFeedback({});
+                                setAgentId('');
+                                setAgentName('');
+                                setAgentEmail('');
+                                setIsAgentVerified(false);
+                                setErrorMessage('');
+                                setIsLoading(false);
+                            }}
+                            className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
+                        >
+                            Start New Attempt
+                        </button>
                     )}
-
-
                 </div>
-            </div >
+            </div>
         );
     }
 
@@ -205,7 +314,6 @@ const AgentInductionCourse = () => {
                     </div>
                 </div>
             </div>
-
             <div className="max-w-6xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-1 hidden lg:block">
@@ -237,7 +345,6 @@ const AgentInductionCourse = () => {
                             </div>
                         </div>
                     </div>
-
                     <div className="lg:col-span-3">
                         <div className="bg-white rounded-lg shadow-sm">
                             <div className="border-b border-gray-200 p-6">
@@ -271,7 +378,6 @@ const AgentInductionCourse = () => {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="p-6">
                                 {currentSection === 'video' && (
                                     <div className="space-y-6">
@@ -284,7 +390,6 @@ const AgentInductionCourse = () => {
                                                 className="w-full h-[500px] rounded-lg"
                                             ></iframe>
                                         </div>
-
                                         <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
                                             <label className="flex items-center">
                                                 <input
@@ -302,7 +407,6 @@ const AgentInductionCourse = () => {
                                                 </span>
                                             </label>
                                         </div>
-
                                         <div>
                                             <h3 className="text-lg font-semibold text-gray-800 mb-4">Resources</h3>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -320,7 +424,6 @@ const AgentInductionCourse = () => {
                                                 ))}
                                             </div>
                                         </div>
-
                                         {videoWatched[currentModule] && (
                                             <div className="flex justify-end">
                                                 <button
@@ -334,7 +437,6 @@ const AgentInductionCourse = () => {
                                         )}
                                     </div>
                                 )}
-
                                 {currentSection === 'quiz' && (
                                     <div className="space-y-8">
                                         <div className="flex items-center justify-between">
@@ -347,7 +449,6 @@ const AgentInductionCourse = () => {
                                                 Back to Video
                                             </button>
                                         </div>
-
                                         {modules[currentModule].questions.map((question, qIndex) => (
                                             <div key={question.id} className="bg-gray-50 rounded-lg p-6">
                                                 <h4 className="text-lg font-medium text-gray-800 mb-4">
@@ -399,7 +500,6 @@ const AgentInductionCourse = () => {
                                                 </div>
                                             </div>
                                         ))}
-
                                         <div className="flex justify-end">
                                             <button
                                                 onClick={completeModule}
