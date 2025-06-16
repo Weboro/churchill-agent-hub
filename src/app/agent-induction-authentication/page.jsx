@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ChevronRight,
   ChevronLeft,
@@ -12,8 +12,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { modules } from "@/constDatas/Modules";
-
-const getAccessToken = async () => {};
+import { SearchableSelect } from "@/components";
+import { useSelectedLayoutSegment } from "next/navigation";
+import { emit } from "process";
 
 const AgentInductionCourse = () => {
   const [currentPage, setCurrentPage] = useState("start");
@@ -30,74 +31,131 @@ const AgentInductionCourse = () => {
   const [isAgentVerified, setIsAgentVerified] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [agentList, setAgentList] = useState(null);
+  const [hasSentOtp, setHasSentOtp] = useState(false);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [isSendingCertificate, setIsSendingCertificate] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [hasSentCertificate, setHasSentCertificate] = useState(false);
+
+  const handleSelect = (option) => {
+    setSelectedAgent(option);
+    console.log("Selected:", option);
+  };
 
   const totalQuestions = modules.reduce(
     (sum, module) => sum + module.questions.length,
     0
   );
+
   const completedModules = Object.keys(moduleProgress).filter(
     (key) => moduleProgress[key]
   ).length;
   const progressPercentage = (completedModules / modules.length) * 100;
 
-  const verifyAgentId = async () => {
-    // Validate agentId
-    if (!agentId?.trim()) {
-      setErrorMessage("Please enter a valid Agent ID");
-      return;
+  useEffect(() => {
+    async function fetchAgentList() {
+      try {
+        const res = await fetch(
+          "https://backend.churchill.nsw.edu.au/api/v1/cms/get-active-agents"
+        );
+        const data = await res.json();
+        setAgentList(data);
+      } catch (error) {
+        console.log("There was an error while fetching!");
+        console.log(error);
+      }
+    }
+    fetchAgentList();
+  }, []);
+
+  const handleSendOtp = async () => {
+    try {
+      setIsSendingOtp(true);
+
+      const FIVE_MINUTES = 5 * 60 * 1000;
+      const storedOtp = sessionStorage.getItem("otp");
+      const storedTime = sessionStorage.getItem("otpTimestamp");
+
+      const now = Date.now();
+
+      // If OTP exists and is still valid, skip generating/sending again
+      if (
+        storedOtp &&
+        storedTime &&
+        now - parseInt(storedTime, 10) < FIVE_MINUTES
+      ) {
+        console.log("OTP still valid, no need to resend");
+        setHasSentOtp(true);
+        return;
+      }
+
+      // Generate new OTP client side
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+      // Call your API to send email with this OTP
+      const response = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: selectedAgent.email,
+          otp,
+        }),
+      });
+
+      if (response.ok) {
+        sessionStorage.setItem("otp", otp);
+        sessionStorage.setItem("otpTimestamp", now.toString());
+
+        setHasSentOtp(true);
+        console.log("OTP sent:", otp);
+      } else {
+        console.error("Failed to send OTP");
+      }
+    } catch (err) {
+      console.error("Error sending OTP:", err);
+    } finally {
+      setIsSendingOtp(false);
+    }
+  };
+
+  const handleValidateOtp = () => {
+    const storedOtp = sessionStorage.getItem("otp");
+    const timestampStr = sessionStorage.getItem("otpTimestamp");
+    const FIVE_MINUTES = 5 * 60 * 1000;
+
+    if (!storedOtp || !timestampStr) {
+      console.error("No OTP found. Please request a new one.");
+      return false;
     }
 
-    try {
-      const res = await fetch(
-        `/api/zoho/search?agentId=${encodeURIComponent(agentId)}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+    const timestamp = parseInt(timestampStr, 10);
+    if (Date.now() - timestamp > FIVE_MINUTES) {
+      console.error("OTP expired. Please request a new one.");
+      return false;
+    }
 
-      const data = await res.json();
+    if (otp === storedOtp) {
+      setIsAgentVerified(true);
+      console.log("OTP verified successfully");
 
-      if (!res.ok) {
-        throw new Error(data?.error || "Unknown error");
-      }
+      sessionStorage.removeItem("otp");
+      sessionStorage.removeItem("otpTimestamp");
 
-      console.log("Zoho API response:", data);
-
-      if (data?.data?.length > 0) {
-        setErrorMessage("");
-
-        const email = data?.data[0].Email;
-        const name = data?.data[0].Account_Name;
-        if (email && name) {
-          setAgentEmail(email);
-          setAgentName(name);
-          setIsAgentVerified(true);
-        } else {
-          throw new Error("This account is invalid!");
-        }
-      } else {
-        setErrorMessage("No account found for the provided Agent ID");
-      }
-    } catch (error) {
-      setErrorMessage(`Error fetching data from Zoho: ${error.message}`);
-      console.error("Zoho fetch error:", error.message);
+      handleStartCourse();
+    } else {
+      console.error("Incorrect OTP");
+      return;
     }
   };
 
   const handleStartCourse = () => {
-    if (isAgentVerified) {
-      setCurrentPage("course");
-      setCurrentModule(0);
-      setCurrentSection("video");
-    } else {
-      setErrorMessage(
-        "Please verify your Agent ID before starting the course."
-      );
-    }
+    setCurrentPage("course");
+    setCurrentModule(0);
+    setCurrentSection("video");
   };
 
   const handleVideoWatched = (moduleId) => {
@@ -128,7 +186,7 @@ const AgentInductionCourse = () => {
     }));
   };
 
-  const completeModule = () => {
+  const completeModule = async () => {
     const currentModuleQuestions = modules[currentModule].questions;
     let moduleScore = 0;
 
@@ -155,11 +213,69 @@ const AgentInductionCourse = () => {
           }
         });
       });
-      setFinalScore(Math.round((totalCorrect / totalQuestions) * 100));
 
+      await sendCertificate(selectedAgent.email, selectedAgent.agent_name);
+
+      setFinalScore(Math.round((totalCorrect / totalQuestions) * 100));
       setCurrentPage("results");
     }
   };
+
+  const sendCertificate = async (email, agentName) => {
+    try {
+      setIsSendingCertificate(true);
+      const response = await fetch("/api/send-certificate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          agentName: agentName,
+        }),
+      });
+
+      if (response.ok) {
+        setHasSentCertificate(true);
+        console.log("Cretificate sent");
+        // REDIRECT TO ANOTHER PAGE HERE
+      } else {
+        throw new Error("Cant send certificate");
+      }
+    } catch (error) {
+      console.log("Error while sending");
+      console.log(error);
+      return false;
+    } finally {
+      sendCertificate(false);
+    }
+  };
+
+  // const sendToZoho = async (name, email, location, zohoId) => {
+  //   try {
+  //     const response = await fetch("/api/zoho/upload", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         name,
+  //         email,
+  //         location,
+  //         recordId: zohoId,
+  //       }),
+  //     });
+
+  //     if (response.ok) {
+  //       console.log("Cretificate sent");
+  //     } else {
+  //       throw new Error("Cant send certificate");
+  //     }
+  //   } catch (error) {
+  //     console.log("Error while sending");
+  //     return false;
+  //   }
+  // };
 
   const navigateToModule = (moduleIndex) => {
     setCurrentModule(moduleIndex);
@@ -169,7 +285,7 @@ const AgentInductionCourse = () => {
   if (currentPage === "start") {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center p-4">
-        <div className="max-w-2xl w-full bg-white rounded-lg shadow-xl p-8 text-center">
+        <div className="max-w-2xl w-full bg-white rounded-lg shadow-xl p-8 ">
           <div className="mb-8">
             <Image
               src="/assets/agent-hub-logo.svg"
@@ -200,74 +316,85 @@ const AgentInductionCourse = () => {
             </div>
           </div>
 
-          <div className="space-y-4 mb-8">
-            <div>
+          {agentList && (
+            <div className="mb-4">
               <label
                 htmlFor="agentId"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Agent ID
+                Select Your agency
               </label>
-              <input
-                id="agentId"
-                type="text"
-                value={agentId}
-                onChange={(e) => setAgentId(e.target.value)}
-                onBlur={verifyAgentId}
-                placeholder="Enter your Agent ID (e.g., RP-207)"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                disabled={isLoading}
-              />
-            </div>
 
-            <div>
-              <label
-                htmlFor="agentName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Name
-              </label>
-              <input
-                id="agentName"
-                type="text"
-                value={agentName}
-                readOnly
-                placeholder="Name will be auto-filled"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+              <SearchableSelect
+                options={agentList.map((el) => ({
+                  ...el,
+                  label: `${el.name} ${el.agent_name}`,
+                  value: el.zoho_id,
+                }))}
+                onSelect={handleSelect}
               />
             </div>
+          )}
+
+          {hasSentOtp && (
             <div>
               <label
-                htmlFor="agentEmail"
+                htmlFor="Otp"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Email
+                Otp{" "}
+                <span className="text-sm">(Make sure to check your spam)</span>
               </label>
               <input
-                id="agentEmail"
-                type="email"
-                value={agentEmail}
-                readOnly
-                placeholder="Email will be auto-filled"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
+                id="Otp"
+                type="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                placeholder="Enter Otp"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
+          )}
+
+          <div className="space-y-4 mb-8">
             {isLoading && (
               <p className="text-gray-600 text-sm">Verifying Agent ID...</p>
             )}
+
             {errorMessage && (
               <p className="text-red-600 text-sm">{errorMessage}</p>
             )}
           </div>
 
-          <button
-            onClick={handleStartCourse}
-            disabled={!isAgentVerified || isLoading}
-            className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-200 flex items-center justify-center mx-auto"
-          >
-            Start Training
-            <ChevronRight className="w-5 h-5 ml-2" />
-          </button>
+          {isAgentVerified ? (
+            <button
+              onClick={handleStartCourse}
+              className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-200 flex items-center justify-center mx-auto"
+            >
+              Start Training
+              <ChevronRight className="w-5 h-5 ml-2" />
+            </button>
+          ) : (
+            <>
+              {hasSentOtp ? (
+                <button
+                  onClick={handleValidateOtp}
+                  className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-200 flex items-center justify-center mx-auto"
+                >
+                  Verify OTP
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </button>
+              ) : (
+                <button
+                  onClick={handleSendOtp}
+                  className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-200 flex items-center justify-center mx-auto"
+                >
+                  {isSendingOtp ? "Sending otp..." : "Send OTP"}
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </button>
+              )}
+            </>
+          )}
         </div>
       </div>
     );
@@ -347,6 +474,7 @@ const AgentInductionCourse = () => {
           </div>
         </div>
       </div>
+
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1 hidden lg:block">
@@ -416,6 +544,15 @@ const AgentInductionCourse = () => {
                   </div>
                 </div>
               </div>
+
+              {selectedAgent && (
+                <p className="px-4 py-3 flex items-center gap-1 bg-primary-orange/40 border border-primary-orange">
+                  <i className="fi fi-rs-user flex"></i>
+
+                  <span className="">{selectedAgent.label}</span>
+                </p>
+              )}
+
               <div className="p-6">
                 {currentSection === "video" && (
                   <div className="space-y-6">
@@ -573,7 +710,9 @@ const AgentInductionCourse = () => {
                         className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center"
                       >
                         {currentModule === modules.length - 1
-                          ? "Complete Course"
+                          ? isSendingCertificate
+                            ? "Processing..."
+                            : "Complete Course"
                           : "Complete Module"}
                         <ChevronRight className="w-5 h-5 ml-2" />
                       </button>

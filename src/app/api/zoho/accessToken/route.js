@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
-    console.log("aee");
-
     const payload = new URLSearchParams({
       refresh_token: process.env.Z_REFRESH_TOKEN,
       client_id: process.env.Z_CLIENT_ID,

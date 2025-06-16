@@ -17,6 +17,7 @@ import NewsSection from "./sections/homeSections/NewsSection";
 import NewsItemCard from "./cards/NewsItemCard";
 import PatternBannerCard from "./cards/PatternBannerCard";
 import Certificate from "./certificate/Certificate";
+import SearchableSelect from "./search/SearchableSelect";
 
 export {
   Button,
@@ -38,4 +39,5 @@ export {
   NeedHelp,
   AgentTraining,
   Certificate,
+  SearchableSelect,
 };

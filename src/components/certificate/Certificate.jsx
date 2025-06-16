@@ -18,7 +18,7 @@ const colors = {
   borderGrey: "#E0E0E0",
 };
 
-const Certificate = ({ agentName, email, location, completionDate }) => {
+const Certificate = ({ agentName, email, completionDate }) => {
   const styles = StyleSheet.create({
     page: {
       backgroundColor: colors.white,
@@ -213,7 +213,6 @@ const Certificate = ({ agentName, email, location, completionDate }) => {
           <View style={styles.agentDetails}>
             <Text style={styles.agentName}>{agentName}</Text>
             <Text style={styles.agentInfo}>Email: {email}</Text>
-            <Text style={styles.agentInfo}>Location: {location}</Text>
           </View>
 
           <Text style={styles.completionText}>

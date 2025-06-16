@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { renderToBuffer } from "@react-pdf/renderer"; // Updated import
+import { renderToBuffer } from "@react-pdf/renderer";
 import { Certificate } from "@/components";
 
-export async function POST(req: Request) {
+export async function POST(req) {
   try {
-    // Parse request body
     const { name, email, location, recordId } = await req.json();
 
     if (!name || !email || !location || !recordId) {
@@ -13,17 +12,6 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
-    // Generate PDF
-    // const pdfDoc = (
-    //   <Certificate
-    //     agentName={name}
-    //     email={email}
-    //     location={location}
-    //     completionDate={new Date().toISOString().split("T")[0]}
-    //   />
-    // );
-    // const pdfBuffer = await renderToBuffer(pdfDoc);
 
     // Get Zoho Access Token
     const tokenPayload = new URLSearchParams({
@@ -53,13 +41,21 @@ export async function POST(req: Request) {
       );
     }
 
+    const pdfBuffer = await renderToBuffer(
+      <Certificate
+        agentName={name}
+        email={email}
+        completionDate={completionDate}
+      />
+    );
+
     // Prepare PDF for upload
     const form = new FormData();
-    // form.append(
-    //   "file",
-    //   new Blob([pdfBuffer], { type: "application/pdf" }),
-    //   `${name}_certificate.pdf`
-    // );
+    form.append(
+      "file",
+      new Blob([pdfBuffer], { type: "application/pdf" }),
+      `${name}_certificate.pdf`
+    );
 
     // Upload to Zoho CRM
     const uploadRes = await fetch(
@@ -75,16 +71,15 @@ export async function POST(req: Request) {
 
     const result = await uploadRes.json();
 
-    if (!uploadRes.ok) {
+    const certificateSend = await sendCertificate(email, name);
+
+    if (!uploadRes.ok && !certificateSend) {
       return NextResponse.json({ error: result }, { status: uploadRes.status });
     }
 
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
     console.error("Upload error:", error);
-    return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
