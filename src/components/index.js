@@ -16,6 +16,7 @@ import AccordionComponent from "./accordion/AccordionComponent";
 import NewsSection from "./sections/homeSections/NewsSection";
 import NewsItemCard from "./cards/NewsItemCard";
 import PatternBannerCard from "./cards/PatternBannerCard";
+import Certificate from "./certificate/Certificate";
 
 export {
   Button,
@@ -36,4 +37,5 @@ export {
   MarketingKit,
   NeedHelp,
   AgentTraining,
+  Certificate,
 };
