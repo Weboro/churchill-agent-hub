@@ -101,7 +101,7 @@ const AgentInductionAuthentication = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "kuickelsayuj@gmail.com",
+          email: selectedAgent.email,
           otp,
         }),
       });
@@ -214,7 +214,7 @@ const AgentInductionAuthentication = () => {
         });
       });
 
-      await sendCertificate("kuickelsayuj@gmail.com", selectedAgent.agent_name);
+      await sendCertificate(selectedAgent.email, selectedAgent.agent_name);
 
       setFinalScore(Math.round((totalCorrect / totalQuestions) * 100));
       setCurrentPage("results");

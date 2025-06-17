@@ -7,7 +7,7 @@ export async function POST(req) {
   try {
     const { email, agentName } = await req.json();
 
-    const completionDate = new Date().getFullYear().toLocaleString();
+    const completionDate = new Date().toLocaleString().split(",")[0];
 
     if (!email) {
       return NextResponse.json({ message: "Email not found" }, { status: 400 });
