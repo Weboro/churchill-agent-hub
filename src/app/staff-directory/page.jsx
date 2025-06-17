@@ -34,13 +34,13 @@ const page = () => {
                   className="block leading-5 w-fit font-semibold hover:text-primary-orange"
                   href={`tel:${item.number}`}
                 >
-                  <i class="fi fi-sr-phone-call"></i>
+                  <i className="fi fi-sr-phone-call"></i>
                 </a>
                 <a
                   className="block leading-5 w-fit font-semibold hover:text-primary-orange"
                   href={`tel:${item.number}`}
                 >
-                  <i class="fi fi-sr-envelope"></i>
+                  <i className="fi fi-sr-envelope"></i>
                 </a>
               </p>
             </div>

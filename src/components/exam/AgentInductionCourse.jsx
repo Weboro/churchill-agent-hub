@@ -87,15 +87,9 @@ const AgentInductionCourse = () => {
   };
 
   const handleStartCourse = () => {
-    if (isAgentVerified) {
-      setCurrentPage("course");
-      setCurrentModule(0);
-      setCurrentSection("video");
-    } else {
-      setErrorMessage(
-        "Please verify your Agent ID before starting the course."
-      );
-    }
+    setCurrentPage("course");
+    setCurrentModule(0);
+    setCurrentSection("video");
   };
 
   const handleVideoWatched = (moduleId) => {
@@ -199,57 +193,6 @@ const AgentInductionCourse = () => {
           </div>
 
           <div className="space-y-4 mb-8">
-            <div>
-              <label
-                htmlFor="agentId"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Agent ID
-              </label>
-              <input
-                id="agentId"
-                type="text"
-                value={agentId}
-                onChange={(e) => setAgentId(e.target.value)}
-                onBlur={verifyAgentId}
-                placeholder="Enter your Agent ID (e.g., RP-207)"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                disabled={isLoading}
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="agentName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Name
-              </label>
-              <input
-                id="agentName"
-                type="text"
-                value={agentName}
-                readOnly
-                placeholder="Name will be auto-filled"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="agentEmail"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email
-              </label>
-              <input
-                id="agentEmail"
-                type="email"
-                value={agentEmail}
-                readOnly
-                placeholder="Email will be auto-filled"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-              />
-            </div>
             {isLoading && (
               <p className="text-gray-600 text-sm">Verifying Agent ID...</p>
             )}
@@ -260,7 +203,6 @@ const AgentInductionCourse = () => {
 
           <button
             onClick={handleStartCourse}
-            disabled={!isAgentVerified || isLoading}
             className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-200 flex items-center justify-center mx-auto"
           >
             Start Training
