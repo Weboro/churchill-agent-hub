@@ -28,7 +28,8 @@
     ".next/types/**/*.ts",
     "src/components/certificate/Certificate.jsx",
     "src/app/api/send-certificate/route.js",
-    "src/app/api/zoho/upload/route.js"
+    "src/app/api/zoho/upload/route.js",
+    "src/app/api/check-student/route.js"
   ],
   "exclude": ["node_modules"]
 }
