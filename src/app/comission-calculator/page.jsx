@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Calculator, FileText, ExternalLink } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function CommissionCalculator() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ export default function CommissionCalculator() {
     gstRegistered: "",
     isValidatingStudent: false,
     isStudentValid: false,
+    isFirstSemester: "",
   });
 
   const [result, setResult] = useState({
@@ -38,13 +40,21 @@ export default function CommissionCalculator() {
         gstRegistered: "",
       }));
     }
+
+    if (field === "isFirstSemester" && value === "no") {
+      setFormData((prev) => ({
+        ...prev,
+        enrollmentFee: "0",
+        saafFee: "0",
+      }));
+    }
   };
 
   const validateStudent = async () => {
     const { studentId } = formData;
 
     if (!studentId) {
-      console.log("NO STUDENT ID");
+      toast.error("Please enter a Student ID");
       return;
     }
 
@@ -82,8 +92,8 @@ export default function CommissionCalculator() {
         setFormData((prev) => ({ ...prev, isStudentValid: true }));
       } else {
         const { message } = await response.json();
-
-        throw new Error(message || "Error while revieving");
+        toast.error(message || "Student not found");
+        throw new Error(message || "Error while receiving");
       }
     } catch (error) {
       console.log(error.message);
@@ -123,6 +133,18 @@ export default function CommissionCalculator() {
       return;
     }
 
+    if (!formData.isFirstSemester) {
+      setResult({
+        show: true,
+        error: true,
+        message: "Please select if claiming commission for first semester.",
+        baseCommission: 0,
+        gstAmount: 0,
+        totalAmount: 0,
+      });
+      return;
+    }
+
     if (enrollmentDate > today) {
       setResult({
         show: true,
@@ -148,8 +170,7 @@ export default function CommissionCalculator() {
       return;
     }
 
-    // Calculate commission using correct formula
-    // (Student Fee Payment - Student Enrollment Fees - Student SAAF fee - Incentive Given) × 20%
+    // Calculate commission
     const enrollmentFee = parseFloat(formData.enrollmentFee) || 0;
     const saafFee = parseFloat(formData.saafFee) || 0;
 
@@ -176,7 +197,7 @@ export default function CommissionCalculator() {
 
   const generatePDF = () => {
     if (!result.show || result.error || result.baseCommission === 0) {
-      alert("Please calculate commission first before generating PDF.");
+      toast.error("Please calculate commission first before generating PDF.");
       return;
     }
 
@@ -191,23 +212,23 @@ Student Name: ${formData.studentName}
 Enrollment Date: ${formData.enrollmentDate}
 Tuition Fee Paid: AUD ${formData.feePayment}
 Incentive Given: AUD ${formData.incentive}
+${formData.isFirstSemester === "yes" ? `Enrollment Fee: AUD ${formData.enrollmentFee}\nSAAF Fee: AUD ${formData.saafFee}` : ""}
 
 Base Commission (20%): AUD ${result.baseCommission.toFixed(2)}
-${
-  result.gstAmount > 0
-    ? `GST (10%): AUD ${result.gstAmount.toFixed(2)}`
-    : "GST: Not applicable"
-}
+${result.gstAmount > 0
+        ? `GST (10%): AUD ${result.gstAmount.toFixed(2)}`
+        : "GST: Not applicable"
+      }
 Total Amount: AUD ${result.totalAmount.toFixed(2)}
 `;
 
-    // For demo purposes, we'll show the content in an alert
-    // In a real implementation, you'd use jsPDF or similar
+    // For demo purposes
     alert("PDF Content (would be downloaded):\n\n" + pdfContent);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <Toaster position="top-right" />
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-lg border-t-4 border-orange-500">
         <div className="p-8">
           {/* Header */}
@@ -244,15 +265,11 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Student Name:
                   </label>
-
                   <input
                     type="text"
                     value={formData.studentName}
                     readOnly
                     disabled
-                    onChange={(e) =>
-                      handleInputChange("studentName", e.target.value)
-                    }
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors mb-3"
                     required
                   />
@@ -275,6 +292,24 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
             {formData.isStudentValid && (
               <>
                 <hr />
+
+                {/* First Semester Commission */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Are you claiming commission for first semester?
+                  </label>
+                  <select
+                    value={formData.isFirstSemester}
+                    onChange={(e) =>
+                      handleInputChange("isFirstSemester", e.target.value)
+                    }
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
+                  >
+                    <option value="">Please select...</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
 
                 {/* Enrollment Date */}
                 <div>
@@ -313,39 +348,43 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                   />
                 </div>
 
-                {/* Enrollment Fee */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Student Enrollment Fee:
-                  </label>
-                  <select
-                    value={formData.enrollmentFee}
-                    onChange={(e) =>
-                      handleInputChange("enrollmentFee", e.target.value)
-                    }
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
-                  >
-                    <option value="0">Not Applicable</option>
-                    <option value="200">200</option>
-                  </select>
-                </div>
+                {/* Enrollment Fee - Conditional */}
+                {formData.isFirstSemester === "yes" && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Student Enrollment Fee:
+                    </label>
+                    <select
+                      value={formData.enrollmentFee}
+                      onChange={(e) =>
+                        handleInputChange("enrollmentFee", e.target.value)
+                      }
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
+                    >
+                      <option value="0">Not Applicable</option>
+                      <option value="200">200</option>
+                    </select>
+                  </div>
+                )}
 
-                {/* SAAF Fee */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Student SAAF Fee:
-                  </label>
-                  <select
-                    value={formData.saafFee}
-                    onChange={(e) =>
-                      handleInputChange("saafFee", e.target.value)
-                    }
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
-                  >
-                    <option value="0">Not Applicable</option>
-                    <option value="500">500</option>
-                  </select>
-                </div>
+                {/* SAAF Fee - Conditional */}
+                {formData.isFirstSemester === "yes" && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Student SAAF Fee:
+                    </label>
+                    <select
+                      value={formData.saafFee}
+                      onChange={(e) =>
+                        handleInputChange("saafFee", e.target.value)
+                      }
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
+                    >
+                      <option value="0">Not Applicable</option>
+                      <option value="500">500</option>
+                    </select>
+                  </div>
+                )}
 
                 {/* Incentive */}
                 <div>
@@ -362,6 +401,9 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                     step="0.01"
                     min="0"
                   />
+                  <p className="text-sm text-gray-500 italic mt-1">
+                    * Add incentive as per your arrangement semester-wise
+                  </p>
                 </div>
 
                 {/* Location */}
@@ -382,7 +424,7 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                   </select>
                 </div>
 
-                {/* GST Section - Only show if Australia is selected */}
+                {/* GST Section */}
                 {formData.location === "australia" && (
                   <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -445,11 +487,10 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
           {/* Results */}
           {result.show && (
             <div
-              className={`mt-8 p-6 rounded-lg border-l-4 ${
-                result.error
+              className={`mt-8 p-6 rounded-lg border-l-4 ${result.error
                   ? "bg-red-50 border-red-400 text-red-700"
                   : "bg-green-50 border-green-400 text-green-700"
-              }`}
+                }`}
             >
               {result.error ? (
                 <p className="font-semibold">{result.message}</p>
@@ -461,23 +502,29 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                   </div>
 
                   {formData.location === "australia" &&
-                  formData.gstRegistered === "yes" ? (
+                    formData.gstRegistered === "yes" ? (
                     <div className="bg-white p-4 rounded-lg border">
                       <div className="text-sm text-gray-600 mb-3">
                         <div>
                           Student Fee Payment: AUD {formData.feePayment}
                         </div>
-                        <div>
-                          Less: Enrollment Fee: AUD {formData.enrollmentFee}
-                        </div>
-                        <div>Less: SAAF Fee: AUD {formData.saafFee}</div>
+                        {formData.isFirstSemester === "yes" && (
+                          <>
+                            <div>
+                              Less: Enrollment Fee: AUD {formData.enrollmentFee}
+                            </div>
+                            <div>Less: SAAF Fee: AUD {formData.saafFee}</div>
+                          </>
+                        )}
                         <div>Less: Incentive: AUD {formData.incentive}</div>
                         <div className="border-t pt-2 font-semibold">
                           Claimable Base: AUD{" "}
                           {(
                             parseFloat(formData.feePayment) -
-                            parseFloat(formData.enrollmentFee) -
-                            parseFloat(formData.saafFee) -
+                            (formData.isFirstSemester === "yes"
+                              ? parseFloat(formData.enrollmentFee) +
+                              parseFloat(formData.saafFee)
+                              : 0) -
                             parseFloat(formData.incentive)
                           ).toFixed(2)}
                         </div>
@@ -497,17 +544,23 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                         <div>
                           Student Fee Payment: AUD {formData.feePayment}
                         </div>
-                        <div>
-                          Less: Enrollment Fee: AUD {formData.enrollmentFee}
-                        </div>
-                        <div>Less: SAAF Fee: AUD {formData.saafFee}</div>
+                        {formData.isFirstSemester === "yes" && (
+                          <>
+                            <div>
+                              Less: Enrollment Fee: AUD {formData.enrollmentFee}
+                            </div>
+                            <div>Less: SAAF Fee: AUD {formData.saafFee}</div>
+                          </>
+                        )}
                         <div>Less: Incentive: AUD {formData.incentive}</div>
                         <div className="border-t pt-2 font-semibold">
                           Claimable Base: AUD{" "}
                           {(
                             parseFloat(formData.feePayment) -
-                            parseFloat(formData.enrollmentFee) -
-                            parseFloat(formData.saafFee) -
+                            (formData.isFirstSemester === "yes"
+                              ? parseFloat(formData.enrollmentFee) +
+                              parseFloat(formData.saafFee)
+                              : 0) -
                             parseFloat(formData.incentive)
                           ).toFixed(2)}
                         </div>
