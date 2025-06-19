@@ -195,35 +195,44 @@ export default function CommissionCalculator() {
     });
   };
 
-  const generatePDF = () => {
+  const handleGeneratePDF = async () => {
     if (!result.show || result.error || result.baseCommission === 0) {
       toast.error("Please calculate commission first before generating PDF.");
       return;
     }
 
-    const pdfContent = `
-COMMISSION INVOICE
+    try {
+      const response = await fetch("/api/download-invoice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formData, result }),
+      });
 
-Invoice To: MPIKA HOLDINGS PTY LTD T/as Churchill Institute of Higher Education
-ABN: 123 456 789
-Address: Level 2, 345 Queen Street, Melbourne VIC 3000
-
-Student Name: ${formData.studentName}
-Enrollment Date: ${formData.enrollmentDate}
-Tuition Fee Paid: AUD ${formData.feePayment}
-Incentive Given: AUD ${formData.incentive}
-${formData.isFirstSemester === "yes" ? `Enrollment Fee: AUD ${formData.enrollmentFee}\nSAAF Fee: AUD ${formData.saafFee}` : ""}
-
-Base Commission (20%): AUD ${result.baseCommission.toFixed(2)}
-${result.gstAmount > 0
-        ? `GST (10%): AUD ${result.gstAmount.toFixed(2)}`
-        : "GST: Not applicable"
+      if (!response.ok) {
+        const errorData = await response.json(); // Get error details from API
+        console.error("API error:", errorData);
+        throw new Error(
+          `Failed to generate PDF: ${errorData.error || response.statusText}`
+        );
       }
-Total Amount: AUD ${result.totalAmount.toFixed(2)}
-`;
 
-    // For demo purposes
-    alert("PDF Content (would be downloaded):\n\n" + pdfContent);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `commission-invoice-${formData.studentName
+        .toLowerCase()
+        .replace(/\s/g, "-")}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("PDF download error:", error.message);
+      console.error(error);
+      toast.error("Something went wrong while generating the PDF.");
+    }
   };
 
   return (
@@ -473,7 +482,7 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
 
                   <button
                     type="button"
-                    onClick={generatePDF}
+                    onClick={handleGeneratePDF}
                     className="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors flex items-center justify-center"
                   >
                     <FileText className="w-5 h-5 mr-2" />
@@ -487,10 +496,11 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
           {/* Results */}
           {result.show && (
             <div
-              className={`mt-8 p-6 rounded-lg border-l-4 ${result.error
+              className={`mt-8 p-6 rounded-lg border-l-4 ${
+                result.error
                   ? "bg-red-50 border-red-400 text-red-700"
                   : "bg-green-50 border-green-400 text-green-700"
-                }`}
+              }`}
             >
               {result.error ? (
                 <p className="font-semibold">{result.message}</p>
@@ -502,7 +512,7 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                   </div>
 
                   {formData.location === "australia" &&
-                    formData.gstRegistered === "yes" ? (
+                  formData.gstRegistered === "yes" ? (
                     <div className="bg-white p-4 rounded-lg border">
                       <div className="text-sm text-gray-600 mb-3">
                         <div>
@@ -523,7 +533,7 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                             parseFloat(formData.feePayment) -
                             (formData.isFirstSemester === "yes"
                               ? parseFloat(formData.enrollmentFee) +
-                              parseFloat(formData.saafFee)
+                                parseFloat(formData.saafFee)
                               : 0) -
                             parseFloat(formData.incentive)
                           ).toFixed(2)}
@@ -559,7 +569,7 @@ Total Amount: AUD ${result.totalAmount.toFixed(2)}
                             parseFloat(formData.feePayment) -
                             (formData.isFirstSemester === "yes"
                               ? parseFloat(formData.enrollmentFee) +
-                              parseFloat(formData.saafFee)
+                                parseFloat(formData.saafFee)
                               : 0) -
                             parseFloat(formData.incentive)
                           ).toFixed(2)}
