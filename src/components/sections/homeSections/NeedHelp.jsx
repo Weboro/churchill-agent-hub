@@ -1,27 +1,28 @@
+const cardsData = [
+  {
+    title: "Accounts",
+    icon: "fi fi-tr-computer",
+    email: "finance@churchill.nsw.edu.au",
+    phone: "02 8856 2997",
+    phoneLink: "tel:0288562997,600",
+  },
+  {
+    title: "Admissions",
+    icon: "fi fi-tr-hr-person",
+    email: "admissions@churchill.nsw.edu.au",
+    phone: "02 8856 2997",
+    phoneLink: "tel:0288562997,601",
+  },
+  {
+    title: "Marketing",
+    icon: "fi fi-tr-id-card-clip-alt",
+    email: "marketing@churchill.nsw.edu.au",
+    phone: "02 8856 2997",
+    phoneLink: "tel:+0288562997,602",
+  },
+];
+
 const NeedHelp = () => {
-  const cardsData = [
-    {
-      title: "Accounts",
-      icon: "fi fi-tr-computer",
-      email: "finance@churchill.nsw.edu.au",
-      phone: "02 8856 2997 Ext: 600",
-      phoneLink: "tel:0288562997,600",
-    },
-    {
-      title: "Admissions",
-      icon: "fi fi-tr-hr-person",
-      email: "admissions@churchill.nsw.edu.au",
-      phone: "02 8856 2997 Ext: 601",
-      phoneLink: "tel:0288562997,601",
-    },
-    {
-      title: "Marketing",
-      icon: "fi fi-tr-id-card-clip-alt",
-      email: "marketing@churchill.nsw.edu.au",
-      phone: "02 8856 2997 Ext: 602",
-      phoneLink: "tel:+0288562997,602",
-    },
-  ];
   return (
     <div className="container-blog mx-auto px-5">
       <h2 className="text-2xl font-bold mb-5">Need Help?</h2>
