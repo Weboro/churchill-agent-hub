@@ -3,22 +3,22 @@ const cardsData = [
     title: "Accounts",
     icon: "fi fi-tr-computer",
     email: "finance@churchill.nsw.edu.au",
-    phone: "02 8856 2997",
-    phoneLink: "tel:0288562997,600",
+    phone: "02 8856 2997 EXT: 600",
+    phoneLink: "tel:0288562997",
   },
   {
     title: "Admissions",
     icon: "fi fi-tr-hr-person",
     email: "admissions@churchill.nsw.edu.au",
-    phone: "02 8856 2997",
-    phoneLink: "tel:0288562997,601",
+    phone: "02 8856 2997 EXT: 601",
+    phoneLink: "tel:0288562997",
   },
   {
     title: "Marketing",
     icon: "fi fi-tr-id-card-clip-alt",
     email: "marketing@churchill.nsw.edu.au",
-    phone: "02 8856 2997",
-    phoneLink: "tel:+0288562997,602",
+    phone: "02 8856 2997 EXT: 602",
+    phoneLink: "tel:+028856299",
   },
 ];
 
