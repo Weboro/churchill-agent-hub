@@ -242,11 +242,11 @@ const Certificate = async ({ agentName, email, completionDate }) => {
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            Churchill Institute of Higher Education • ABN: 12 345 678 901 •
-            Phone: +61 2 9876 5432
+            Churchill Institute of Higher Education • ABN: 91 612 507 141
           </Text>
           <Text style={styles.footerText}>
-            RTO Code: 91290 | CRICOS Provider: 03893J
+            • CRICOS Provider Code 04082E
+            • TEQSA Provider Number PRV14305
           </Text>
         </View>
       </Page>
