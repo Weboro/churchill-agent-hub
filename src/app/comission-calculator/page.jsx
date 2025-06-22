@@ -221,7 +221,7 @@ export default function CommissionCalculator() {
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = `churchill-commission-invoice-.pdf`;
+      link.download = `churchill-commission-invoice-${formData.studentId}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -236,7 +236,8 @@ export default function CommissionCalculator() {
   const maskName = (fullName) => {
     if (!fullName) return "";
     const [first, last] = fullName.split(" ");
-    const maskedFirst = first.slice(0, 3) + "*".repeat(Math.max(0, first.length - 3));
+    const maskedFirst =
+      first.slice(0, 3) + "*".repeat(Math.max(0, first.length - 3));
     const maskedLast = last ? "*".repeat(last.length - 3) + last.slice(-3) : "";
     return `${maskedFirst} ${maskedLast}`;
   };
@@ -502,10 +503,11 @@ export default function CommissionCalculator() {
           {/* Results */}
           {result.show && (
             <div
-              className={`mt-8 p-6 rounded-lg border-l-4 ${result.error
-                ? "bg-red-50 border-red-400 text-red-700"
-                : "bg-green-50 border-green-400 text-green-700"
-                }`}
+              className={`mt-8 p-6 rounded-lg border-l-4 ${
+                result.error
+                  ? "bg-red-50 border-red-400 text-red-700"
+                  : "bg-green-50 border-green-400 text-green-700"
+              }`}
             >
               {result.error ? (
                 <p className="font-semibold">{result.message}</p>
@@ -517,7 +519,7 @@ export default function CommissionCalculator() {
                   </div>
 
                   {formData.location === "australia" &&
-                    formData.gstRegistered === "yes" ? (
+                  formData.gstRegistered === "yes" ? (
                     <div className="bg-white p-4 rounded-lg border">
                       <div className="text-sm text-gray-600 mb-3">
                         <div>
@@ -538,7 +540,7 @@ export default function CommissionCalculator() {
                             parseFloat(formData.feePayment) -
                             (formData.isFirstSemester === "yes"
                               ? parseFloat(formData.enrollmentFee) +
-                              parseFloat(formData.saafFee)
+                                parseFloat(formData.saafFee)
                               : 0) -
                             parseFloat(formData.incentive)
                           ).toFixed(2)}
@@ -574,7 +576,7 @@ export default function CommissionCalculator() {
                             parseFloat(formData.feePayment) -
                             (formData.isFirstSemester === "yes"
                               ? parseFloat(formData.enrollmentFee) +
-                              parseFloat(formData.saafFee)
+                                parseFloat(formData.saafFee)
                               : 0) -
                             parseFloat(formData.incentive)
                           ).toFixed(2)}
