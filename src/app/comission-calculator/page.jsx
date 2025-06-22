@@ -221,9 +221,7 @@ export default function CommissionCalculator() {
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = `commission-invoice-${formData.studentName
-        .toLowerCase()
-        .replace(/\s/g, "-")}.pdf`;
+      link.download = `churchill-commission-invoice-.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

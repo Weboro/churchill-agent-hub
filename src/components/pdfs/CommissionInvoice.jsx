@@ -81,6 +81,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const maskStudentName = (fullName) => {
+  if (!fullName) return "";
+
+  const parts = fullName.trim().split(" ");
+  if (parts.length < 2) return fullName;
+
+  const [first, last] = parts;
+  const maskedFirst = first[0] + "*".repeat(Math.max(2, first.length - 1));
+  const maskedLast =
+    last.length > 1
+      ? "*".repeat(Math.max(2, last.length - 1)) + last[last.length - 1]
+      : last;
+
+  return `${maskedFirst} ${maskedLast}`;
+};
+
 const CommissionInvoice = ({ formData, result }) => {
   const parseAmount = (v) => parseFloat(v || 0).toFixed(2);
 
@@ -109,7 +125,9 @@ const CommissionInvoice = ({ formData, result }) => {
 
         <View style={styles.section}>
           <Text style={styles.label}>Student Name:</Text>
-          <Text style={styles.value}>{formData.studentName}</Text>
+          <Text style={styles.value}>
+            {maskStudentName(formData.studentName)}
+          </Text>
           <Text>Enrollment Date: {formData.enrollmentDate}</Text>
         </View>
 

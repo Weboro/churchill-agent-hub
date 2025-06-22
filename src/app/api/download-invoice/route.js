@@ -15,9 +15,7 @@ export async function POST(req) {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="commission-invoice-${formData.studentName
-          .toLowerCase()
-          .replace(/\s+/g, "-")}.pdf"`,
+        "Content-Disposition": `attachment; filename="churchill-commission-invoice.pdf"`,
       },
     });
   } catch (err) {
