@@ -5,7 +5,7 @@ import Certificate from "@/components/certificate/Certificate";
 
 export async function POST(req) {
   try {
-    const { email, agentName } = await req.json();
+    const { email, agentName, recordId } = await req.json();
 
     const completionDate = new Date().toLocaleString().split(",")[0];
 
@@ -20,6 +20,10 @@ export async function POST(req) {
         completionDate={completionDate}
       />
     );
+
+    if (!pdfBuffer || pdfBuffer.length === 0) {
+      throw new Error("PDF buffer is empty or invalid");
+    }
 
     let transporter = nodemailer.createTransport({
       host: "smtp-mail.outlook.com",

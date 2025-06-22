@@ -1,4 +1,12 @@
 import PropTypes from "prop-types";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+} from "@react-pdf/renderer";
 
 const colors = {
   primaryBlue: "#003366",
@@ -10,11 +18,7 @@ const colors = {
   borderGrey: "#E0E0E0",
 };
 
-const Certificate = async ({ agentName, email, completionDate }) => {
-  const { Document, Page, Text, View, StyleSheet, Image } = await import(
-    "@react-pdf/renderer"
-  );
-
+const Certificate = ({ agentName, email, completionDate }) => {
   const styles = StyleSheet.create({
     page: {
       backgroundColor: colors.white,
@@ -184,11 +188,11 @@ const Certificate = async ({ agentName, email, completionDate }) => {
 
         {/* Header */}
         <View style={styles.header}>
-          <Image
+          {/* <Image
             style={styles.instituteLogo}
             src="/assets/logo.png"
             alt="logo"
-          />
+          /> */}
           <Text style={styles.instituteTitle}>
             CHURCHILL INSTITUTE OF HIGHER EDUCATION
           </Text>
@@ -245,8 +249,7 @@ const Certificate = async ({ agentName, email, completionDate }) => {
             Churchill Institute of Higher Education • ABN: 91 612 507 141
           </Text>
           <Text style={styles.footerText}>
-            • CRICOS Provider Code 04082E
-            • TEQSA Provider Number PRV14305
+            • CRICOS Provider Code 04082E • TEQSA Provider Number PRV14305
           </Text>
         </View>
       </Page>

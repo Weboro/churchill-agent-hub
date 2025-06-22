@@ -101,7 +101,7 @@ const AgentInductionAuthentication = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: selectedAgent.email,
+          email: "sayujkuickel@gmail.com",
           otp,
         }),
       });
@@ -214,16 +214,22 @@ const AgentInductionAuthentication = () => {
         });
       });
 
-      await sendCertificate(selectedAgent.email, selectedAgent.agent_name);
+      await sendCertificate(
+        selectedAgent.email,
+        selectedAgent.agent_name,
+        selectedAgent.zoho_id
+      );
 
       setFinalScore(Math.round((totalCorrect / totalQuestions) * 100));
       setCurrentPage("results");
     }
   };
 
-  const sendCertificate = async (email, agentName) => {
+  const sendCertificate = async (email, agentName, zoho_id) => {
     try {
       setIsSendingCertificate(true);
+      setErrorMessage(null);
+
       const response = await fetch("/api/send-certificate", {
         method: "POST",
         headers: {
@@ -232,22 +238,25 @@ const AgentInductionAuthentication = () => {
         body: JSON.stringify({
           email: email,
           agentName: agentName,
+          recordId: zoho_id,
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         setHasSentCertificate(true);
-        console.log("Cretificate sent");
-        // REDIRECT TO ANOTHER PAGE HERE
+        console.log("Certificate sent:", data);
+        return true;
       } else {
-        throw new Error("Cant send certificate");
+        throw new Error(data.message || "Failed to send certificate");
       }
     } catch (error) {
-      console.log("Error while sending");
-      console.log(error);
+      console.error("Error sending certificate:", error.message);
+      setErrorMessage(error.message);
       return false;
     } finally {
-      sendCertificate(false);
+      setIsSendingCertificate(false);
     }
   };
 
