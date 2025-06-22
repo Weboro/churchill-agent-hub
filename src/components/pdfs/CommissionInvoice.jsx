@@ -119,8 +119,8 @@ const CommissionInvoice = ({ formData, result }) => {
           <Text style={styles.value}>
             MPIKA HOLDINGS PTY LTD T/as Churchill Institute of Higher Education
           </Text>
-          <Text>ABN: 123 456 789</Text>
-          <Text>Level 2, 345 Queen Street, Melbourne VIC 3000</Text>
+          <Text>ABN: 91 612 507 141</Text>
+          <Text>Level 1, 16-18 Wentworth Street Parramatta NSW 2150</Text>
         </View>
 
         <View style={styles.section}>
@@ -161,7 +161,7 @@ const CommissionInvoice = ({ formData, result }) => {
           </View>
 
           {formData.location === "australia" &&
-          formData.gstRegistered === "yes" ? (
+            formData.gstRegistered === "yes" ? (
             <>
               <View style={styles.row}>
                 <Text>GST (10%):</Text>
@@ -181,8 +181,10 @@ const CommissionInvoice = ({ formData, result }) => {
         </View>
 
         <Text style={styles.footer}>
-          Churchill Institute of Higher Education • RTO: 91290 • CRICOS: 03893J
-          • ABN: 12 345 678 901
+          Churchill Institute of Higher Education
+          • CRICOS Provider Code 04082E
+          • TEQSA Provider Number PRV14305
+          • ABN: 91 612 507 141
         </Text>
       </Page>
     </Document>
