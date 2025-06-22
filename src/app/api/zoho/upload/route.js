@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
+import Certificate from "@/components/certificate/Certificate";
+import { renderToBuffer } from "@react-pdf/renderer";
 
 export async function POST(req) {
   try {
-    const { name, email, location, recordId } = await req.json();
+    const { name, email, recordId } = await req.json();
 
-    if (!name || !email || !location || !recordId) {
+    if (!name || !email || !recordId) {
       return NextResponse.json(
-        { error: "Missing name, email, location, or recordId" },
+        { error: "Missing name, email,  or recordId" },
         { status: 400 }
       );
     }
@@ -39,21 +41,23 @@ export async function POST(req) {
       );
     }
 
-    // const pdfBuffer = await renderToBuffer(
-    //   <Certificate
-    //     agentName={name}
-    //     email={email}
-    //     completionDate={completionDate}
-    //   />
-    // );
+    // Generate PDF
+    const completionDate = new Date().toISOString().split("T")[0];
+    const pdfBuffer = await renderToBuffer(
+      <Certificate
+        agentName={name}
+        email={email}
+        completionDate={completionDate}
+      />
+    );
 
-    // Prepare PDF for upload
-    const form = new FormData();
-    // form.append(
-    //   "file",
-    //   new Blob([pdfBuffer], { type: "application/pdf" }),
-    //   `${name}_certificate.pdf`
-    // );
+    // Prepare FormData for Zoho CRM
+    const formdata = new FormData();
+    formdata.append(
+      "file",
+      new Blob([pdfBuffer], { type: "application/pdf" }),
+      `${name}_certificate.pdf`
+    );
 
     // Upload to Zoho CRM
     const uploadRes = await fetch(
@@ -63,16 +67,17 @@ export async function POST(req) {
         headers: {
           Authorization: `Zoho-oauthtoken ${access_token}`,
         },
-        body: form,
+        body: formdata,
       }
     );
 
     const result = await uploadRes.json();
 
-    const certificateSend = await sendCertificate(email, name);
-
-    if (!uploadRes.ok && !certificateSend) {
-      return NextResponse.json({ error: result }, { status: uploadRes.status });
+    if (!uploadRes.ok) {
+      return NextResponse.json(
+        { error: result.message || "Failed to upload attachment" },
+        { status: uploadRes.status }
+      );
     }
 
     return NextResponse.json({ success: true, data: result });

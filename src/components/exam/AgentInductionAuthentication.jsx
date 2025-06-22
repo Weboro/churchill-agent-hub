@@ -13,8 +13,7 @@ import {
 import Image from "next/image";
 import { modules } from "@/constDatas/Modules";
 import { SearchableSelect } from "@/components";
-import { useSelectedLayoutSegment } from "next/navigation";
-import { emit } from "process";
+import toast from "react-hot-toast";
 
 const AgentInductionAuthentication = () => {
   const [currentPage, setCurrentPage] = useState("start");
@@ -41,7 +40,6 @@ const AgentInductionAuthentication = () => {
 
   const handleSelect = (option) => {
     setSelectedAgent(option);
-    console.log("Selected:", option);
   };
 
   const totalQuestions = modules.reduce(
@@ -63,8 +61,10 @@ const AgentInductionAuthentication = () => {
         const data = await res.json();
         setAgentList(data);
       } catch (error) {
-        console.log("There was an error while fetching!");
+        toast.error("Please enter a Student ID");
+
         console.log(error);
+        setErrorMessage("Failed to fetch agent list. Please try again.");
       }
     }
     fetchAgentList();
@@ -86,7 +86,7 @@ const AgentInductionAuthentication = () => {
         storedTime &&
         now - parseInt(storedTime, 10) < FIVE_MINUTES
       ) {
-        console.log("OTP still valid, no need to resend");
+        toast.error("OTP still valid, no need to resend");
         setHasSentOtp(true);
         return;
       }
@@ -101,7 +101,7 @@ const AgentInductionAuthentication = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "sayujkuickel@gmail.com",
+          email: selectedAgent?.email || "sayujkuickel@gmail.com",
           otp,
         }),
       });
@@ -109,14 +109,14 @@ const AgentInductionAuthentication = () => {
       if (response.ok) {
         sessionStorage.setItem("otp", otp);
         sessionStorage.setItem("otpTimestamp", now.toString());
-
         setHasSentOtp(true);
-        console.log("OTP sent:", otp);
+        toast.success("OTP sent:", otp);
       } else {
-        console.error("Failed to send OTP");
+        throw new Error("Failed to send OTP");
       }
     } catch (err) {
       console.error("Error sending OTP:", err);
+      setErrorMessage("Failed to send OTP. Please try again.");
     } finally {
       setIsSendingOtp(false);
     }
@@ -128,26 +128,24 @@ const AgentInductionAuthentication = () => {
     const FIVE_MINUTES = 5 * 60 * 1000;
 
     if (!storedOtp || !timestampStr) {
-      console.error("No OTP found. Please request a new one.");
+      setErrorMessage("No OTP found. Please request a new one.");
       return false;
     }
 
     const timestamp = parseInt(timestampStr, 10);
     if (Date.now() - timestamp > FIVE_MINUTES) {
-      console.error("OTP expired. Please request a new one.");
+      setErrorMessage("OTP expired. Please request a new one.");
       return false;
     }
 
     if (otp === storedOtp) {
       setIsAgentVerified(true);
-      console.log("OTP verified successfully");
-
+      toast.success("OTP verified successfully");
       sessionStorage.removeItem("otp");
       sessionStorage.removeItem("otpTimestamp");
-
       handleStartCourse();
     } else {
-      console.error("Incorrect OTP");
+      setErrorMessage("Incorrect OTP. Please try again.");
       return;
     }
   };
@@ -187,49 +185,84 @@ const AgentInductionAuthentication = () => {
   };
 
   const completeModule = async () => {
-    const currentModuleQuestions = modules[currentModule].questions;
-    let moduleScore = 0;
+    try {
+      const currentModuleQuestions = modules[currentModule].questions;
+      let moduleScore = 0;
 
-    currentModuleQuestions.forEach((question) => {
-      if (quizAnswers[question.id] === question.correct) {
-        moduleScore++;
-      }
-    });
-
-    setModuleProgress((prev) => ({
-      ...prev,
-      [currentModule]: true,
-    }));
-
-    if (currentModule < modules.length - 1) {
-      setCurrentModule(currentModule + 1);
-      setCurrentSection("video");
-    } else {
-      let totalCorrect = 0;
-      modules.forEach((module) => {
-        module.questions.forEach((question) => {
-          if (quizAnswers[question.id] === question.correct) {
-            totalCorrect++;
-          }
-        });
+      currentModuleQuestions.forEach((question) => {
+        if (quizAnswers[question.id] === question.correct) {
+          moduleScore++;
+        }
       });
 
-      await sendCertificate(
-        selectedAgent.email,
-        selectedAgent.agent_name,
-        selectedAgent.zoho_id
-      );
+      setModuleProgress((prev) => ({
+        ...prev,
+        [currentModule]: true,
+      }));
 
-      setFinalScore(Math.round((totalCorrect / totalQuestions) * 100));
-      setCurrentPage("results");
+      if (currentModule < modules.length - 1) {
+        setCurrentModule(currentModule + 1);
+        setCurrentSection("video");
+      } else {
+        let totalCorrect = 0;
+        modules.forEach((module) => {
+          module.questions.forEach((question) => {
+            if (quizAnswers[question.id] === question.correct) {
+              totalCorrect++;
+            }
+          });
+        });
+
+        setIsSendingCertificate(true);
+        setErrorMessage("");
+
+        // Run sendCertificate and sendToZoho in parallel
+        const [certificateResult, zohoResult] = await Promise.all([
+          sendCertificate(
+            selectedAgent.email,
+            selectedAgent.agent_name,
+            selectedAgent.zoho_id
+          ).catch((err) => ({
+            success: false,
+            error: err.message || "Failed to send certificate email",
+          })),
+          sendToZoho(
+            selectedAgent.agent_name,
+            selectedAgent.email,
+            selectedAgent.zoho_id
+          ).catch((err) => ({
+            success: false,
+            error: err.message || "Failed to upload certificate to Zoho",
+          })),
+        ]);
+
+        // Check for errors in either operation
+        const errors = [];
+        if (!certificateResult.success) {
+          errors.push(certificateResult.error);
+        }
+        if (!zohoResult.success) {
+          errors.push(zohoResult.error);
+        }
+        if (errors.length > 0) {
+          setErrorMessage(errors.join("; "));
+        }
+
+        setHasSentCertificate(certificateResult.success);
+        setFinalScore(Math.round((totalCorrect / totalQuestions) * 100));
+        setCurrentPage("results");
+      }
+    } catch (error) {
+      console.error("Error in completeModule:", error);
+      setErrorMessage("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSendingCertificate(false);
     }
   };
 
   const sendCertificate = async (email, agentName, zoho_id) => {
     try {
-      setIsSendingCertificate(true);
       setErrorMessage(null);
-
       const response = await fetch("/api/send-certificate", {
         method: "POST",
         headers: {
@@ -245,46 +278,46 @@ const AgentInductionAuthentication = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setHasSentCertificate(true);
-        console.log("Certificate sent:", data);
-        return true;
+        toast.success("Certificate sent:", data);
+        return { success: true, data };
       } else {
         throw new Error(data.message || "Failed to send certificate");
       }
     } catch (error) {
       console.error("Error sending certificate:", error.message);
-      setErrorMessage(error.message);
-      return false;
-    } finally {
-      setIsSendingCertificate(false);
+      throw error;
     }
   };
 
-  // const sendToZoho = async (name, email, location, zohoId) => {
-  //   try {
-  //     const response = await fetch("/api/zoho/upload", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         name,
-  //         email,
-  //         location,
-  //         recordId: zohoId,
-  //       }),
-  //     });
+  const sendToZoho = async (name, email, zohoId) => {
+    try {
+      const response = await fetch("/api/zoho/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          recordId: zohoId,
+          location: "default",
+        }),
+      });
 
-  //     if (response.ok) {
-  //       console.log("Cretificate sent");
-  //     } else {
-  //       throw new Error("Cant send certificate");
-  //     }
-  //   } catch (error) {
-  //     console.log("Error while sending");
-  //     return false;
-  //   }
-  // };
+      const result = await response.json();
+
+      if (response.ok) {
+        toast.success("Certificate sent successfully to Zoho:");
+        // console.log("Certificate sent successfully to Zoho:", result.data);
+        return { success: true, data: result.data };
+      } else {
+        throw new Error(result.error || "Failed to send certificate to Zoho");
+      }
+    } catch (error) {
+      console.error("Error while sending certificate to Zoho:", error.message);
+      throw error;
+    }
+  };
 
   const navigateToModule = (moduleIndex) => {
     setCurrentModule(moduleIndex);
@@ -294,7 +327,7 @@ const AgentInductionAuthentication = () => {
   if (currentPage === "start") {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center p-4">
-        <div className="max-w-2xl w-full bg-white rounded-lg shadow-xl p-8 ">
+        <div className="max-w-2xl w-full bg-white rounded-lg shadow-xl p-8">
           <div className="mb-8">
             <Image
               src="/assets/agent-hub-logo.svg"
@@ -331,9 +364,8 @@ const AgentInductionAuthentication = () => {
                 htmlFor="agentId"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Select Your agency
+                Select Your Agency
               </label>
-
               <SearchableSelect
                 options={agentList.map((el) => ({
                   ...el,
@@ -348,18 +380,17 @@ const AgentInductionAuthentication = () => {
           {hasSentOtp && (
             <div>
               <label
-                htmlFor="Otp"
+                htmlFor="otp"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Otp{" "}
-                <span className="text-sm">(Make sure to check your spam)</span>
+                OTP <span className="text-sm">(Check your spam folder)</span>
               </label>
               <input
-                id="Otp"
-                type="otp"
+                id="otp"
+                type="text"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter Otp"
+                placeholder="Enter OTP"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
@@ -369,7 +400,6 @@ const AgentInductionAuthentication = () => {
             {isLoading && (
               <p className="text-gray-600 text-sm">Verifying Agent ID...</p>
             )}
-
             {errorMessage && (
               <p className="text-red-600 text-sm">{errorMessage}</p>
             )}
@@ -396,9 +426,10 @@ const AgentInductionAuthentication = () => {
               ) : (
                 <button
                   onClick={handleSendOtp}
+                  disabled={!selectedAgent}
                   className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors duration-200 flex items-center justify-center mx-auto"
                 >
-                  {isSendingOtp ? "Sending otp..." : "Send OTP"}
+                  {isSendingOtp ? "Sending OTP..." : "Send OTP"}
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </button>
               )}
@@ -432,6 +463,15 @@ const AgentInductionAuthentication = () => {
                 ? ". You have successfully completed the training!"
                 : ". You need 70% to pass."}
             </p>
+            {errorMessage && (
+              <p className="text-red-600 text-sm mb-4">{errorMessage}</p>
+            )}
+            {passed && hasSentCertificate && !errorMessage && (
+              <p className="text-green-600 text-sm mb-4">
+                Your certificate has been sent to your email and uploaded to
+                Zoho.
+              </p>
+            )}
           </div>
           {passed ? (
             <></>
@@ -452,6 +492,10 @@ const AgentInductionAuthentication = () => {
                 setIsAgentVerified(false);
                 setErrorMessage("");
                 setIsLoading(false);
+                setHasSentOtp(false);
+                setOtp("");
+                setSelectedAgent(null);
+                setHasSentCertificate(false);
               }}
               className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
             >
@@ -557,7 +601,6 @@ const AgentInductionAuthentication = () => {
               {selectedAgent && (
                 <p className="px-4 py-3 flex items-center gap-1 bg-primary-orange/40 border border-primary-orange">
                   <i className="fi fi-rs-user flex"></i>
-
                   <span className="">{selectedAgent.label}</span>
                 </p>
               )}
@@ -714,7 +757,7 @@ const AgentInductionAuthentication = () => {
                         disabled={
                           !modules[currentModule].questions.every(
                             (q) => quizAnswers[q.id] !== undefined
-                          )
+                          ) || isSendingCertificate
                         }
                         className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center"
                       >
