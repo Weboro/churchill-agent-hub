@@ -269,7 +269,7 @@ const AgentInductionAuthentication = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email
+          email: email,
           agentName: agentName,
           recordId: zoho_id,
         }),
