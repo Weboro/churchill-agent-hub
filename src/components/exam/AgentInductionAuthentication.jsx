@@ -15,6 +15,18 @@ import { modules } from "@/constDatas/Modules";
 import { SearchableSelect } from "@/components";
 import toast from "react-hot-toast";
 
+function formatEmail(email) {
+  const [local, domain] = email.split("@");
+
+  if (local.length <= 2) {
+    return email;
+  }
+
+  const masked =
+    local[0] + "*".repeat(local.length - 2) + local[local.length - 1];
+  return `${masked}@${domain}`;
+}
+
 const AgentInductionAuthentication = () => {
   const [currentPage, setCurrentPage] = useState("start");
   const [currentModule, setCurrentModule] = useState(0);
@@ -40,6 +52,7 @@ const AgentInductionAuthentication = () => {
 
   const handleSelect = (option) => {
     setSelectedAgent(option);
+    console.log(option);
   };
 
   const totalQuestions = modules.reduce(
@@ -101,7 +114,7 @@ const AgentInductionAuthentication = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email,
+          email: selectedAgent.email,
           otp,
         }),
       });
@@ -378,22 +391,27 @@ const AgentInductionAuthentication = () => {
           )}
 
           {hasSentOtp && (
-            <div>
-              <label
-                htmlFor="otp"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                OTP <span className="text-sm">(Check your spam folder)</span>
-              </label>
-              <input
-                id="otp"
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                placeholder="Enter OTP"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-              />
-            </div>
+            <>
+              <div>
+                <label
+                  htmlFor="otp"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  OTP <span className="text-sm">(Check your spam folder)</span>
+                </label>
+                <input
+                  id="otp"
+                  type="text"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="Enter OTP"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+              <div className="mt-4 text-xs bg-orange-50 border-l-4 border-orange-500 p-4 mb-8 text-left text-orange-900/60">
+                Otp sent to {formatEmail(selectedAgent.email)}.
+              </div>
+            </>
           )}
 
           <div className="space-y-4 mb-8">
