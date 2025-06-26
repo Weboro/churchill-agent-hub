@@ -85,8 +85,9 @@ const AgentInductionAuthentication = () => {
     try {
       setIsSendingOtp(true);
 
-      if (!selectedAgent.email) {
-        toast.error("No email found for the user!");
+      if (!selectedAgent.email || selectedAgent.email === null) {
+        console.log(selectedAgent.email);
+        setErrorMessage("No Email found for the user");
         setIsSendingOtp(false);
         return;
       }
@@ -103,7 +104,7 @@ const AgentInductionAuthentication = () => {
         storedTime &&
         now - parseInt(storedTime, 10) < FIVE_MINUTES
       ) {
-        toast.error("OTP still valid, no need to resend");
+        setErrorMessage("OTP still valid, no need to resend");
         setHasSentOtp(true);
         return;
       }
