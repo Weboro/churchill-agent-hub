@@ -7,7 +7,6 @@ import {
   XCircle,
   Play,
   ExternalLink,
-  Award,
   AlertCircle,
 } from "lucide-react";
 import Image from "next/image";
@@ -52,7 +51,6 @@ const AgentInductionAuthentication = () => {
 
   const handleSelect = (option) => {
     setSelectedAgent(option);
-    console.log(option);
   };
 
   const totalQuestions = modules.reduce(
@@ -86,6 +84,12 @@ const AgentInductionAuthentication = () => {
   const handleSendOtp = async () => {
     try {
       setIsSendingOtp(true);
+
+      if (!selectedAgent.email) {
+        toast.error("No email found for the user!");
+        setIsSendingOtp(false);
+        return;
+      }
 
       const FIVE_MINUTES = 5 * 60 * 1000;
       const storedOtp = sessionStorage.getItem("otp");
