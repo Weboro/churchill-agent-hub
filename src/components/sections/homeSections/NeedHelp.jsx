@@ -45,8 +45,8 @@ const NeedHelp = () => {
                       className="block border border-orange-400 rounded-md bg-orange-50 p-2 mb-2"
                     >
                       <p className="font-semibold break-words text-wrap text-sm flex align-middle gap-2">
-                        <i className="fi fi-rr-phone-call flex align-middle items-center"></i>
                         {item.email}
+                        <i className="fi fi-rr-phone-call flex align-middle items-center"></i>
                       </p>
                     </a>
                   )}
@@ -57,8 +57,8 @@ const NeedHelp = () => {
                       className="block border border-orange-400 rounded-md bg-orange-50 p-2 "
                     >
                       <p className="font-semibold break-words text-wrap text-sm flex align-middle gap-2">
-                        <i className="fi fi-rr-envelope flex align-middle items-center"></i>
                         {item.phone}
+                        <i className="fi fi-rr-envelope flex align-middle items-center"></i>
                       </p>
                     </a>
                   )}

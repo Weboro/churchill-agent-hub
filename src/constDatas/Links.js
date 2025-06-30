@@ -1,8 +1,10 @@
+import { redirect } from "next/dist/server/api-utils";
+
 export const QuickLinksData = [
   {
     title: "New Student Application",
     description: "",
-    link: "https://churchill.nsw.edu.au/assets/apply-at-churchill.pdf",
+    link: "https://churchill.nsw.edu.au/apply-for-course-admission",
     icon: "fi fi-tr-student",
     redirect: true,
   },
@@ -21,9 +23,15 @@ export const QuickLinksData = [
     redirect: true,
   },
   {
-    title: "Agent Comission calculator",
+    title: "Agent Commission calculator",
     link: "/comission-calculator",
     icon: "fi fi-tr-calculator",
+  },
+  {
+    title: "Churchill Institute's Monitoring Education Agents Policy",
+    link: "/assets/GC16_Monitoring_Educational_Agents_Policy_v1.4 _July_2024.pdf",
+    icon: "fi fi-tr-calculator",
+    redirect: true,
   },
 ];
 
