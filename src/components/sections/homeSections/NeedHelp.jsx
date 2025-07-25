@@ -4,21 +4,21 @@ const cardsData = [
     icon: "fi fi-tr-computer",
     email: "finance@churchill.nsw.edu.au",
     phone: "02 8856 2997 EXT: 600",
-    phoneLink: "tel:0288562997",
+    phoneLink: "0288562997,600",
   },
   {
     title: "Admissions",
     icon: "fi fi-tr-hr-person",
     email: "admissions@churchill.nsw.edu.au",
     phone: "02 8856 2997 EXT: 601",
-    phoneLink: "tel:0288562997",
+    phoneLink: "0288562997,601",
   },
   {
     title: "Marketing",
     icon: "fi fi-tr-id-card-clip-alt",
     email: "marketing@churchill.nsw.edu.au",
     phone: "02 8856 2997 EXT: 602",
-    phoneLink: "tel:+028856299",
+    phoneLink: "+028856299,602",
   },
 ];
 
@@ -53,7 +53,7 @@ const NeedHelp = () => {
 
                   {item.phone && (
                     <a
-                      href={`tel:${item.phone}`}
+                      href={`tel:${item.phoneLink}`}
                       className="block border border-orange-400 rounded-md bg-orange-50 p-2 "
                     >
                       <p className="font-semibold break-words text-wrap text-sm flex align-middle gap-2">
