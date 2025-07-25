@@ -18,7 +18,7 @@ const cardsData = [
     icon: "fi fi-tr-id-card-clip-alt",
     email: "marketing@churchill.nsw.edu.au",
     phone: "02 8856 2997 EXT: 602",
-    phoneLink: "+028856299,602",
+    phoneLink: "028856299,602",
   },
 ];
 
