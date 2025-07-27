@@ -46,7 +46,7 @@ const NeedHelp = () => {
                     >
                       <p className="font-semibold break-words text-wrap text-sm flex align-middle gap-2">
                         {item.email}
-                        <i className="fi fi-rr-phone-call flex align-middle items-center"></i>
+                        <i className="fi fi-rr-envelope flex align-middle items-center"></i>
                       </p>
                     </a>
                   )}
@@ -58,7 +58,7 @@ const NeedHelp = () => {
                     >
                       <p className="font-semibold break-words text-wrap text-sm flex align-middle gap-2">
                         {item.phone}
-                        <i className="fi fi-rr-envelope flex align-middle items-center"></i>
+                        <i className="fi fi-rr-phone-call flex align-middle items-center"></i>
                       </p>
                     </a>
                   )}
