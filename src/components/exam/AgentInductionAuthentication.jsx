@@ -67,7 +67,7 @@ const AgentInductionAuthentication = () => {
     async function fetchAgentList() {
       try {
         const res = await fetch(
-          "https://backend.churchill.nsw.edu.au/api/v1/cms/get-active-agents"
+          "https://backend.churchill.nsw.edu.au/api/v1/cms/get-induction-agents"
         );
         const data = await res.json();
         setAgentList(data);
@@ -563,13 +563,12 @@ const AgentInductionAuthentication = () => {
                   <button
                     key={module.id}
                     onClick={() => navigateToModule(index)}
-                    className={`w-full text-left p-3 rounded-lg transition-colors duration-200 ${
-                      currentModule === index
-                        ? "bg-orange-100 border-2 border-orange-300"
-                        : moduleProgress[index]
+                    className={`w-full text-left p-3 rounded-lg transition-colors duration-200 ${currentModule === index
+                      ? "bg-orange-100 border-2 border-orange-300"
+                      : moduleProgress[index]
                         ? "bg-green-50 border border-green-200"
                         : "bg-gray-50 border border-gray-200 hover:bg-gray-100"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-gray-800">
@@ -595,11 +594,10 @@ const AgentInductionAuthentication = () => {
                   <div className="flex space-x-2">
                     <button
                       onClick={() => setCurrentSection("video")}
-                      className={`px-4 py-2 rounded-lg font-medium ${
-                        currentSection === "video"
-                          ? "bg-orange-500 text-white"
-                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                      }`}
+                      className={`px-4 py-2 rounded-lg font-medium ${currentSection === "video"
+                        ? "bg-orange-500 text-white"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        }`}
                     >
                       <Play className="w-4 h-4 inline-block mr-2" />
                       Video
@@ -607,13 +605,12 @@ const AgentInductionAuthentication = () => {
                     <button
                       onClick={() => setCurrentSection("quiz")}
                       disabled={!videoWatched[currentModule]}
-                      className={`px-4 py-2 rounded-lg font-medium ${
-                        currentSection === "quiz"
-                          ? "bg-orange-500 text-white"
-                          : videoWatched[currentModule]
+                      className={`px-4 py-2 rounded-lg font-medium ${currentSection === "quiz"
+                        ? "bg-orange-500 text-white"
+                        : videoWatched[currentModule]
                           ? "bg-gray-100 text-gray-600 hover:bg-gray-200"
                           : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      }`}
+                        }`}
                     >
                       Quiz
                     </button>
@@ -730,13 +727,12 @@ const AgentInductionAuthentication = () => {
                               return (
                                 <label
                                   key={oIndex}
-                                  className={`flex items-start p-3 border rounded-lg cursor-pointer transition-colors duration-200 ${
-                                    isWrong
-                                      ? "border-red-300 bg-red-50"
-                                      : isSelected && isCorrect
+                                  className={`flex items-start p-3 border rounded-lg cursor-pointer transition-colors duration-200 ${isWrong
+                                    ? "border-red-300 bg-red-50"
+                                    : isSelected && isCorrect
                                       ? "border-green-300 bg-green-50"
                                       : "border-gray-200 hover:bg-white"
-                                  }`}
+                                    }`}
                                 >
                                   <input
                                     type="radio"
