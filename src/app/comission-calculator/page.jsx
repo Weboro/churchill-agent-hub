@@ -252,7 +252,7 @@ export default function CommissionCalculator() {
             <div className="flex items-center justify-center mb-4">
               <Calculator className="w-8 h-8 text-orange-500 mr-3" />
               <h1 className="text-3xl font-bold text-orange-500">
-                Agent Commission Calculator
+                Education Agent Commission Calculator
               </h1>
             </div>
           </div>

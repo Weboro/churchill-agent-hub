@@ -10,9 +10,9 @@ const TopInfo = () => {
   return (
     <div className="">
       <ul className="flex gap-4 text-[14px] font-semibold text-[#424242]">
-        <Link target="blank" href={`${NEXT_PUBLIC_CHURCHILL_URL}/find-agentn`}>
+        <Link target="blank" href={`${NEXT_PUBLIC_CHURCHILL_URL}/find-agent`}>
           <li className="flex gap-2 items-center cursor-pointer">
-            <p>Find Agent</p>
+            <p>Find an Education Agent</p>
             <span>
               <FaUser />
             </span>
@@ -26,11 +26,7 @@ const TopInfo = () => {
             </span>
           </li>
         </Link>
-        <Link
-          target="blank"
-          href={`${NEXT_PUBLIC_CHURCHILL_URL}/contact-us`}
-          // href="https://churchill.nsw.edu.au/contact-us"
-        >
+        <Link target="blank" href={`${NEXT_PUBLIC_CHURCHILL_URL}/contact-us`}>
           <li className="flex gap-1 items-center cursor-pointer">
             <p>Contact Us</p>
             <span>

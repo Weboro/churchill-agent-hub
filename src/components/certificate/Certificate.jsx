@@ -208,7 +208,9 @@ const Certificate = ({ agentName, email, completionDate }) => {
             Congratulations for completing
           </Text>
 
-          <Text style={styles.courseTitle}>Agent Induction Course</Text>
+          <Text style={styles.courseTitle}>
+            Education Agent Induction Course
+          </Text>
 
           <View style={styles.agentDetails}>
             <Text style={styles.agentName}>{agentName}</Text>
@@ -217,7 +219,7 @@ const Certificate = ({ agentName, email, completionDate }) => {
 
           <Text style={styles.completionText}>
             This certificate acknowledges your successful completion of the
-            Agent Induction Course and demonstrates your commitment to
+            Education Agent Induction Course and demonstrates your commitment to
             professional development and excellence in service delivery.
           </Text>
 

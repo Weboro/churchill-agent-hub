@@ -1,5 +1,3 @@
-import { redirect } from "next/dist/server/api-utils";
-
 export const QuickLinksData = [
   {
     title: "New Student Application",
@@ -16,14 +14,14 @@ export const QuickLinksData = [
     redirect: true,
   },
   {
-    title: "New Agent Application",
+    title: "New Education Agent Application",
     description: "",
     link: "https://forms.zohopublic.com.au/CIHE/form/AgencyRequestApplication1/formperma/1PRnx2lGlk2LDSJGOpTbJcnB4ZrfkPNwaOUHLkyB93Q",
     icon: "fi fi-tr-journal-alt",
     redirect: true,
   },
   {
-    title: "Agent Commission calculator",
+    title: "Education Agent Commission calculator",
     link: "/comission-calculator",
     icon: "fi fi-tr-calculator",
   },
