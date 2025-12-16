@@ -481,7 +481,7 @@ const AgentInductionAuthentication = () => {
               {finalScore}%
             </div>
             <p className="text-lg text-gray-600 mb-8">
-              You scored {finalScore}% on the Agent Induction Course
+              You scored {finalScore}% on the Education Agent Induction Course
               {passed
                 ? ". You have successfully completed the training!"
                 : ". You need 70% to pass."}
@@ -536,7 +536,7 @@ const AgentInductionAuthentication = () => {
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-lg font-semibold text-gray-800">
-              Agent Induction Course Progress
+              Education Agent Induction Course Progress
             </h2>
             <span className="text-sm text-gray-600">
               {completedModules}/{modules.length} modules completed

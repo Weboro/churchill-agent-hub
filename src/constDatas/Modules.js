@@ -247,8 +247,8 @@ export const modules = [
         question: "A valid written agreement must outline:",
         options: [
           "The agent’s exclusive right to recruit worldwide",
-          "Territories where the agent may recruit and obligations under ESOS",
-          "The exact number of students the agent must enrol",
+          "Territories where the education agent may recruit and obligations under ESOS",
+          "The exact number of students the education agent must enrol",
           "A guarantee of risk-free visa success",
         ],
         correct: 1,
@@ -258,7 +258,7 @@ export const modules = [
         question: "Failure to comply with the National Code may result in:",
         options: [
           "A temporary increase in commission",
-          "Termination of the agent agreement",
+          "Termination of the education agent agreement",
           "Automatic provider risk reduction",
           "DHA issuing a new CoE",
         ],
