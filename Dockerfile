@@ -4,23 +4,20 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package.json, yarn.lock (if exists), and other necessary files
-COPY package.json yarn.lock* ./
+COPY package.json ./
 
-# Install Yarn globally
-
-# Install dependencies using Yarn
-
+# Install dependencies using npm
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
-RUN yarn install
-# Build your application (if necessary)
-RUN yarn build
 
+# Build your application (if necessary)
+RUN npm run build
 # Expose port app runs on
 EXPOSE 3000
 
 # Command to run the app
-CMD ["yarn", "start"]
+CMD ["npm", "run", "start"]
 
 
