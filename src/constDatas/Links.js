@@ -26,7 +26,7 @@ export const QuickLinksData = [
     icon: "fi fi-tr-calculator",
   },
   {
-    title: "Churchill Institute's Monitoring Education Agents Policy",
+    title: "Education Agents Management Policy",
     link: "/assets/Monitoring_Educational_Agents_Policy_v1.5_Clean.pdf",
     icon: "fi fi-tr-calculator",
     redirect: true,
